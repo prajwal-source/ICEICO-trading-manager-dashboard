@@ -7,6 +7,12 @@ import DashboardLayout from "../components/layout/DashboardLayout";
 const Login = lazy(() => import("../pages/auth/Login"));
 
 const Registration = lazy(() => import("../pages/modules/registration/Registration"));
+const Online = lazy(() => import("../pages/modules/online/Online"));
+const Accounts = lazy(() => import("../pages/modules/accounts/Accounts"));
+const Administrotor = lazy(() => import("../pages/modules/administrator/Administrator"));
+const Reports = lazy(() => import("../pages/modules/reports/Reports"));
+const RiskManagement = lazy(() => import("../pages/modules/risk_management/RiskManagement"));
+const Symbols = lazy(() => import("../pages/modules/symbols/Symbols"));
 
 
 const PublicRoute = () => {
@@ -22,6 +28,13 @@ const PublicRoute = () => {
               {/* PAGES INSIDE DASHBOARD */}
               {/* Registration Module */}
               <Route path="/registration" element={<Registration/>}/>
+              <Route path="/online" element={<Online/>}/>
+              <Route path="/accounts" element={<Accounts/>}/>
+              <Route path="/administrator" element={<Administrotor/>}/>
+              <Route path="/reports" element={<Reports/>}/>
+              <Route path="/risk_management" element={<RiskManagement/>}/>
+              <Route path="/symbols" element={<Symbols/>}/>
+              
           </Route>
            </Route>
       </Routes>

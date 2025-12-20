@@ -37,22 +37,17 @@ function Footer() {
     }, []);
 
     return (
-        <footer className="fixed bottom-0 left-0 right-0 z-50 bg-[#e0dfc6] border-t">
+        <footer className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t">
             <div className="flex items-center px-4 py-2 text-xs">
-
                 {/* Left spacer */}
                 <div className="flex-1" />
-
                 {/* Right side status */}
                 <div className="flex items-center gap-6 text-gray-800">
-
                     <div className="flex items-center gap-1">
-                        <Globe size={14} className="text-blue-500 font-bold" />
+                        <Globe size={18} className="text-blue-500 font-bold" />
                         <span className="font-bold">Rockfieldtrade</span>
                     </div>
-
                     <div className="font-bold">{time}</div>
-
                     <div className="font-bold">{speed}</div>
 
                 </div>

@@ -3,7 +3,6 @@ import TopNavbar from '../uiComponents/TopNavbar'
 import { Outlet } from 'react-router-dom'
 import Footer from '../uiComponents/Footer'
 
-
 function DashboardLayout() {
   return (
    <div className="min-h-screen">

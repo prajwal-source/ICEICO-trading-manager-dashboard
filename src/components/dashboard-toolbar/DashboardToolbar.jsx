@@ -7,7 +7,7 @@ function DashboardToolbar({
     searchPlaceholder = "Enter the keyword",
 }) {
     return (
-        <div className="w-full bg-[#f5f2e8] border border-gray-800 px-2 py-1">
+        <div className="w-full fixed bg-[#f5f2e8] border border-gray-800 border-b px-2 py-1">
             <div className="flex items-center gap-3 text-sm">
 
                 {/* Left action */}
@@ -17,7 +17,7 @@ function DashboardToolbar({
                         className="flex cursor-pointer items-center text-[12px] font-bold gap-1 px-2 py-1 
                        border border-gray-400 bg-white rounded hover:bg-[#fff2c6]"
                     >
-                        <UserPlus className="text-green-800 text-sm leading-none" />
+                        <UserPlus size={17} className="text-green-800 text-[12px] leading-none" />
                         New account
                     </button>
                 )}
@@ -49,7 +49,7 @@ function DashboardToolbar({
                 {/* Search */}
                 {onSearch && (
                     <div className="flex items-center gap-2">
-                        <Filter className="text-gray-800 text-xs leading-none" />
+                        <Filter size={20}  className="text-gray-800 text-xs leading-none" />
 
                         <input
                             type="text"
