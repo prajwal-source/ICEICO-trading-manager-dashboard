@@ -1,7 +1,5 @@
 import React, { useState } from 'react'
-import DashboardToolbar from '../../../components/dashboard-toolbar/DashboardToolbar'
-import DataTable from '../../../components/uiComponents/DataTable'
-import Pagination from '../../../components/uiComponents/Pagination';
+import DataTable from '../../../../components/uiComponents/DataTable';
 
 const columns = [
   { header: "Symbol", field: "symbol" },
@@ -416,107 +414,21 @@ const data = [
 ];
 
 
-function Symbols() {
-  const [currentPage, setCurrentPage] = useState(1);
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-  };
-  const rowsPerPage = 20;
-  const startIndex = (currentPage - 1) * rowsPerPage;
-  const paginatedData = data.slice(startIndex, startIndex + rowsPerPage);
+function ArchivedAccount() {
+ 
   return (
     <>
-      <DashboardToolbar
-
-        const filters={[
-          {
-            name: "Group",
-            value: "all",
-            onChange: (v) => console.log(v),
-            options: [
-              { label: "All", value: "all" },
-              { label: "General (Live)", value: "live" },
-              { label: "General (Demo)", value: "demo" },
-
-            ],
-          },
-          {
-            name: "Equity",
-            value: "all",
-            onChange: (v) => console.log(v),
-            options: [
-              { label: "All", value: "all" },
-              { label: "More 300", value: "yes" },
-              { label: "More 1000", value: "no" },
-              { label: "Less 300", value: "yes" },
-              { label: "Less 1000", value: "no" },
-
-            ],
-          },
-          {
-            name: "MoneyBack",
-            value: "all",
-            onChange: (v) => console.log(v),
-            options: [
-              { label: "All", value: "all" },
-              { label: "Yes", value: "yes" },
-              { label: "No", value: "no" },
-
-            ],
-          },
-          {
-            name: "Profitable",
-            value: "all",
-            onChange: (v) => console.log(v),
-            options: [
-              { label: "All", value: "all" },
-              { label: "Yes", value: "yes" },
-              { label: "No", value: "no" },
-
-            ],
-          },
-          {
-            name: "Registartion date",
-            value: "all",
-            onChange: (v) => console.log(v),
-            options: [
-              { label: "All", value: "all" },
-              { label: "December 2025", value: "yes" },
-              { label: "November 2025", value: "no" },
-              { label: "October 2025", value: "yes" },
-              { label: "Choose", value: "no" },
-
-            ],
-          },
-          {
-            name: "Demo/Live",
-            value: "all",
-            onChange: (v) => console.log(v),
-            options: [
-              { label: "All", value: "all" },
-              { label: "Demo", value: "yes" },
-              { label: "Live", value: "no" },
-            ],
-          },
-        ]}
-
-        onSearch={(text) => console.log("Search:", text)}
-      />
+      
       {/* DataTable */}
       <DataTable
         columns={columns}
-        data={paginatedData}
+        data={data}
+        withTopPadding={false}
         showPagination={true}
       />
-      <div className="fixed bottom-8.5 left-0 right-0 z-50 bg-white border-t">
-        <Pagination
-          currentPage={currentPage}
-          totalPages={Math.ceil(data.length / 10)} // example: 10 rows per page
-          onPageChange={handlePageChange}
-        />
-      </div>
+     
     </>
   )
 }
 
-export default Symbols;
+export default ArchivedAccount;

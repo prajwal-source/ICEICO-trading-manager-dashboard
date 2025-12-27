@@ -1,9 +1,5 @@
-import React, { useState } from 'react'
-import DashboardToolbar from '../../../components/dashboard-toolbar/DashboardToolbar'
-import DataTable from '../../../components/uiComponents/DataTable'
-import NewAccount from '../../../components/popups/new Account/NewAccount';
-import Pagination from '../../../components/uiComponents/Pagination';
-
+import React from 'react'
+import DataTable from '../../../../components/uiComponents/DataTable';
 
 const columns = [
     { header: "Group", field: "group" },
@@ -50,89 +46,18 @@ const data = [
     { group: "B", number: 129, name: "Neeraj Pandey", city: "Gwalior", registration: "2024-03-07 14:10", email: "neeraj.p@gmail.com", adress: "City Centre, Gwalior", comment: "Limited access" },
     { group: "C", number: 130, name: "Ayesha Khan", city: "Alwar", registration: "2024-04-15 11:45", email: "ayesha.k@gmail.com", adress: "Scheme 1, Alwar", comment: "Active user" }
 ];
-
-function Registration() {
-    const [currentPage, setCurrentPage] = useState(1);
-    const handlePageChange = (page) => {
-        setCurrentPage(page);
-    };
-    const rowsPerPage = 20;
-    const startIndex = (currentPage - 1) * rowsPerPage;
-    const paginatedData = data.slice(startIndex, startIndex + rowsPerPage);
-
-    const [createAccount, setCreateAccount] = useState(false);
+function Symbols() {
     return (
         <>
-            <DashboardToolbar
-                onCreate={() => setCreateAccount(true)}
-
-                const filters={[
-                    {
-                        name: "Group",
-                        value: "all",
-                        onChange: (v) => console.log(v),
-                        options: [
-                            { label: "All", value: "all" },
-                            { label: "General (Live)", value: "live" },
-                            { label: "General (Demo)", value: "demo" },
-
-                        ],
-                    },
-                    {
-                        name: "Is Client",
-                        value: "all",
-                        onChange: (v) => console.log(v),
-                        options: [
-                            { label: "All", value: "all" },
-                            { label: "Yes", value: "yes" },
-                            { label: "No", value: "no" },
-                        ],
-                    },
-                    {
-                        name: "Registration Date",
-                        value: "all",
-                        onChange: (v) => console.log(v),
-                        options: [
-                            { label: "All", value: "all" },
-                            { label: "December 2025", value: "yes" },
-                            { label: "November 2025", value: "no" },
-                            { label: "October 2025", value: "no" },
-                            { label: "Choose", value: "no" },
-                        ],
-                    },
-                    {
-                        name: "Demo/Live",
-                        value: "all",
-                        onChange: (v) => console.log(v),
-                        options: [
-                            { label: "All", value: "all" },
-                            { label: "Demo", value: "yes" },
-                            { label: "Live", value: "no" },
-                        ],
-                    },
-                ]}
-
-                onSearch={(text) => console.log("Search:", text)} />
             {/* DataTable */}
             <DataTable
                 columns={columns}
-                data={paginatedData}
-                showPagination={true}
+                data={data}
+                withTopPadding={false}
+                
             />
-
-            {/* create account popup  */}
-            <div className="fixed bottom-8.5 left-0 right-0 z-50 bg-white border-t">
-                <Pagination
-                    currentPage={currentPage}
-                    totalPages={Math.ceil(data.length / 10)} // example: 10 rows per page
-                    onPageChange={handlePageChange}
-                />
-            </div>
-            <NewAccount
-                isOpen={createAccount}
-                onClose={() => setCreateAccount(false)} />
         </>
     )
 }
 
-export default Registration
+export default Symbols;

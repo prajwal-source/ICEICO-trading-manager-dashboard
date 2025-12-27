@@ -1,4 +1,6 @@
 import { Filter, UserPlus } from "lucide-react";
+import { useState } from "react";
+import FilterPopup from "../popups/filter/FilterPopup";
 
 function DashboardToolbar({
     onCreate,
@@ -6,6 +8,9 @@ function DashboardToolbar({
     onSearch,
     searchPlaceholder = "Enter the keyword",
 }) {
+    
+    const [filter,setFilter]=useState(false)
+
     return (
         <div className="w-full fixed bg-[#f5f2e8] border border-gray-800 border-b px-2 py-1">
             <div className="flex items-center gap-3 text-sm">
@@ -49,7 +54,7 @@ function DashboardToolbar({
                 {/* Search */}
                 {onSearch && (
                     <div className="flex items-center gap-2">
-                        <Filter size={20}  className="text-gray-800 text-xs leading-none" />
+                        <Filter size={18} onClick={()=>setFilter(true)}  className="text-gray-800 text-xs leading-none" />
 
                         <input
                             type="text"
@@ -57,6 +62,7 @@ function DashboardToolbar({
                             className="border bg-white border-gray-400 px-2 text-xs py-1 rounded w-44"
                             onChange={(e) => onSearch(e.target.value)}
                         />
+                         <FilterPopup isOpen={filter} onClose={()=>setFilter(false)}/>
 
                         <button
                             className="border text-xs border-gray-400 bg-[#e2e1d5] 

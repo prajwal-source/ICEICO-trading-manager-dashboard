@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import DashboardToolbar from '../../../components/dashboard-toolbar/DashboardToolbar'
 import DataTable from '../../../components/uiComponents/DataTable'
+import Pagination from '../../../components/uiComponents/Pagination';
 
 const columns = [
     { header: "Group", field: "group" },
@@ -331,6 +332,13 @@ const data = [
 ];
 
 function Online() {
+   const [currentPage, setCurrentPage] = useState(1);
+      const handlePageChange = (page) => {
+          setCurrentPage(page);
+      };
+      const rowsPerPage = 20;
+      const startIndex = (currentPage - 1) * rowsPerPage;
+      const paginatedData = data.slice(startIndex, startIndex + rowsPerPage);
     return (
         <>
             <DashboardToolbar
@@ -375,8 +383,16 @@ function Online() {
             {/* DataTable */}
             <DataTable
                 columns={columns}
-                data={data}
+                data={paginatedData}
+                showPagination={true}
             />
+             <div className="fixed bottom-8.5 left-0 right-0 z-50 bg-white border-t">
+                <Pagination
+                    currentPage={currentPage}
+                    totalPages={Math.ceil(data.length / 10)} // example: 10 rows per page
+                    onPageChange={handlePageChange}
+                />
+            </div>
         </>
     )
 }

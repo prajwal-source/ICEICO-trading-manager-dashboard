@@ -1,11 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { MdSettings } from "react-icons/md";
+import SettingPopup from "../popups/setting/SettingPopup";
 
 const Pagination = ({
     currentPage = 1,
     totalPages = 1,
     onPageChange,
 }) => {
+    
+    const [settingPopup,setSettingPopup]=useState(false);
+
     const handlePrev = () => {
         if (currentPage > 1) onPageChange(currentPage - 1);
     };
@@ -15,7 +19,7 @@ const Pagination = ({
     };
 
     return (
-        <div className="flex items-center justify-between bg-[#e4e3cf] p-1 text-sm">
+        <div className="flex items-center   justify-between bg-[#e4e3cf] p-1 text-sm">
 
             {/* LEFT: Show + Count */}
             <div className="flex items-center gap-2">
@@ -71,9 +75,13 @@ const Pagination = ({
             </div>
 
             {/* RIGHT: Settings Icon */}
-            <div className="border bg-white hover:bg-gray-100 p-1.5 mr-1 rounded cursor-pointer">
+            <div className="border bg-white hover:bg-gray-100 p-1.5 mr-1 rounded cursor-pointer"
+              onClick={()=>setSettingPopup(true)}
+            >
                 <MdSettings size={18} />
             </div>
+
+            <SettingPopup isOpen={settingPopup} onClose={()=>setSettingPopup(false)}/>
 
         </div>
     );

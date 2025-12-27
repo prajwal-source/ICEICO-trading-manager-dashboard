@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { MdMenu, MdClose } from "react-icons/md";
 import { useNavigate, useLocation } from "react-router-dom";
+import UtipPopup from "../popups/utipPopup/UtipPopup";
+
 
 const menuItems = [
   { label: "Registrations", path: "/registration" },
@@ -13,7 +15,7 @@ const menuItems = [
 ];
 
 function TopNavbar() {
-  const [open, setOpen] = useState(false);
+  const [utipOpen,setUtipOpen]=useState(false);
   const navigate = useNavigate();
   const location = useLocation(); //  ACTIVE ROUTE
 
@@ -29,14 +31,14 @@ function TopNavbar() {
 
           {/* Logo */}
           <div
-            onClick={() => handleNavigate("/dashboard")}
+            onClick={() => setUtipOpen(true)}
             className="mr-6 py-1 px-3 font-semibold cursor-pointer
                        bg-[#eee1b8] hover:bg-[#f6f5dc]
                        text-gray-800 border rounded"
           >
             Utip
           </div>
-
+           <UtipPopup isOpen={utipOpen} onClose={() => setUtipOpen(false)} />
           {/* Desktop Menu */}
           <nav className="hidden md:flex items-center gap-2 text-sm font-medium">
             {menuItems.map((item) => {
@@ -60,42 +62,9 @@ function TopNavbar() {
             })}
           </nav>
 
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setOpen(!open)}
-            className="md:hidden ml-auto text-gray-700"
-          >
-            {open ? <MdClose size={22} /> : <MdMenu size={22} />}
-          </button>
         </div>
       </div>
 
-      {/* Mobile Menu */}
-      {open && (
-        <div className="md:hidden bg-white border-t">
-          <nav className="flex flex-col px-4 py-3 space-y-2 text-sm">
-            {menuItems.map((item) => {
-              const isActive = location.pathname === item.path;
-
-              return (
-                <button
-                  key={item.path}
-                  onClick={() => handleNavigate(item.path)}
-                  className={`
-                    text-left px-3 py-2 rounded transition
-                    ${isActive
-                      ? "bg-amber-100 font-semibold"
-                      : "hover:bg-gray-100"
-                    }
-                  `}
-                >
-                  {item.label}
-                </button>
-              );
-            })}
-          </nav>
-        </div>
-      )}
     </header>
   );
 }

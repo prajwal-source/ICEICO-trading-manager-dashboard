@@ -1,25 +1,28 @@
 import React, { useState } from 'react'
 import DashboardToolbar from '../../../components/dashboard-toolbar/DashboardToolbar'
 import DataTable from '../../../components/uiComponents/DataTable'
+import Pagination from '../../../components/uiComponents/Pagination';
 
 const columns = [
   { header: "Group", field: "group" },
   { header: "Number", field: "number" },
   { header: "Name", field: "name" },
-  {  header: <span className="block text-right">Leverage</span>, field: "leverage" ,
-     render: (value) => {
-    const num = Number(
-      String(value).replace(/,/g, "")
-    );
+  {
+    header: <span className="block text-right">Leverage</span>, field: "leverage",
+    render: (value) => {
+      const num = Number(
+        String(value).replace(/,/g, "")
+      );
 
-    return (
-      <div className="text-right">
-        {isNaN(num) ? "0.00" : num.toFixed(2)}
-      </div>
-    );
+      return (
+        <div className="text-right">
+          {isNaN(num) ? "0.00" : num.toFixed(2)}
+        </div>
+      );
+    },
   },
-  },
-  {  header: <span className="block text-right">Deposit</span>,field: "deposit",
+  {
+    header: <span className="block text-right">Deposit</span>, field: "deposit",
     render: (value) => (
       <div className="text-right">
         {Number(value).toFixed(2)}
@@ -27,78 +30,86 @@ const columns = [
     ),
   },
 
-  { header: <span className="block text-right">Withdraw</span>, field: "withdraw" ,
-     render: (value) => (
+  {
+    header: <span className="block text-right">Withdraw</span>, field: "withdraw",
+    render: (value) => (
       <div className="text-right">
         {Number(value).toFixed(2)}
       </div>
     ),
   },
- {
-  header: <span className="block text-right">Bonus In/Out</span>,
-  field: "bonus",
-  render: (value) => {
-    const num = Number(
-      String(value).replace(/,/g, "")
-    );
+  {
+    header: <span className="block text-right">Bonus In/Out</span>,
+    field: "bonus",
+    render: (value) => {
+      const num = Number(
+        String(value).replace(/,/g, "")
+      );
 
-    return (
-      <div className="text-right">
-        {isNaN(num) ? "0.00" : num.toFixed(2)}
-      </div>
-    );
+      return (
+        <div className="text-right">
+          {isNaN(num) ? "0.00" : num.toFixed(2)}
+        </div>
+      );
+    },
   },
-},
 
-  { header: <span className="block text-right">In-Out</span>, field: "in-out" ,
-     render: (value) => (
+  {
+    header: <span className="block text-right">In-Out</span>, field: "in-out",
+    render: (value) => (
       <div className="text-right">
         {Number(value).toFixed(2)}
       </div>
     ),
   },
-  { header: <span className="block text-right">Deals</span>, field: "deals" ,
-     render: (value) => (
+  {
+    header: <span className="block text-right">Deals</span>, field: "deals",
+    render: (value) => (
       <div className="text-right">
         {Number(value).toFixed(2)}
       </div>
     ),
   },
-  { header: <span className="block text-right">Margin Levels</span>, field: "margin_levels",
-     render: (value) => (
-      <div className="text-right">
-        {Number(value).toFixed(2)}
-      </div>
-    ),
-   },
-  { header: <span className="block text-right">Spent bonus</span>, field: "spent",
-     render: (value) => (
-      <div className="text-right">
-        {Number(value).toFixed(2)}
-      </div>
-    ),
-   },
-  { header: <span className="block text-right">Profit</span>, field: "profit" ,
-     render: (value) => (
+  {
+    header: <span className="block text-right">Margin Levels</span>, field: "margin_levels",
+    render: (value) => (
       <div className="text-right">
         {Number(value).toFixed(2)}
       </div>
     ),
   },
-  { header: <span className="block text-right">Margin</span>, field: "margin" ,
-     render: (value) => (
+  {
+    header: <span className="block text-right">Spent bonus</span>, field: "spent",
+    render: (value) => (
       <div className="text-right">
         {Number(value).toFixed(2)}
       </div>
     ),
   },
-  { header: <span className="block text-right">Free</span>, field: "free",
-     render: (value) => (
+  {
+    header: <span className="block text-right">Profit</span>, field: "profit",
+    render: (value) => (
       <div className="text-right">
         {Number(value).toFixed(2)}
       </div>
     ),
-   },
+  },
+  {
+    header: <span className="block text-right">Margin</span>, field: "margin",
+    render: (value) => (
+      <div className="text-right">
+        {Number(value).toFixed(2)}
+      </div>
+    ),
+  },
+  {
+    header: <span className="block text-right">Free</span>, field: "free",
+    render: (value) => (
+      <div className="text-right">
+        {Number(value).toFixed(2)}
+      </div>
+    ),
+  },
 
 ];
 // dummy data
@@ -414,6 +425,13 @@ const data = [
 
 
 function Accounts() {
+  const [currentPage, setCurrentPage] = useState(1);
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+  const rowsPerPage = 20;
+  const startIndex = (currentPage - 1) * rowsPerPage;
+  const paginatedData = data.slice(startIndex, startIndex + rowsPerPage);
   return (
     <>
       <DashboardToolbar
@@ -495,8 +513,16 @@ function Accounts() {
       {/* DataTable */}
       <DataTable
         columns={columns}
-        data={data}
+        data={paginatedData}
+        showPagination={true}
       />
+      <div className="fixed bottom-8.5 left-0 right-0 z-50 bg-white border-t">
+        <Pagination
+          currentPage={currentPage}
+          totalPages={Math.ceil(data.length / 10)} // example: 10 rows per page
+          onPageChange={handlePageChange}
+        />
+      </div>
     </>
   )
 }
