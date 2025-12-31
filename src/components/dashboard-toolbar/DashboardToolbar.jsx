@@ -12,17 +12,17 @@ function DashboardToolbar({
     const [filter,setFilter]=useState(false)
 
     return (
-        <div className="w-full fixed bg-[#f5f2e8] border border-gray-800 border-b px-2 py-1">
+        <div className="w-full fixed bg-[#f5f2e8] border border-gray-800 px-2 py-1.25">
             <div className="flex items-center gap-3 text-sm">
 
                 {/* Left action */}
                 {onCreate && (
                     <button
                         onClick={onCreate}
-                        className="flex cursor-pointer items-center text-[12px] font-bold gap-1 px-2 py-1 
+                        className="flex cursor-pointer items-center text-[12px] font-bold gap-1 px-2 py-0.75 
                        border border-gray-400 bg-white rounded hover:bg-[#fff2c6]"
                     >
-                        <UserPlus size={17} className="text-green-800 text-[12px] leading-none" />
+                        <UserPlus size={15} className="text-green-800 text-[12px] leading-none" />
                         New account
                     </button>
                 )}
@@ -37,7 +37,7 @@ function DashboardToolbar({
                         <select
                             value={filter.value}
                             onChange={(e) => filter.onChange(e.target.value)}
-                            className="border border-gray-400 text-[12px] bg-white px-2 py-1 rounded"
+                            className="border border-gray-400 text-[12px] bg-white px-2 py-0.5 rounded"
                         >
                             {filter.options.map((opt) => (
                                 <option key={opt.value} value={opt.value}>

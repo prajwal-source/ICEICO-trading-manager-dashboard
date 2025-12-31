@@ -21,7 +21,7 @@ function TopNavbar() {
 
   const handleNavigate = (path) => {
     navigate(path);
-    setOpen(false);
+    
   };
 
   return (

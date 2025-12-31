@@ -9,16 +9,12 @@ import Pagination from '../../../components/uiComponents/Pagination';
 function RiskManagement() {
   const [active, setActive] = useState("accounts");
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-  };
   return (
     <div className="flex flex-col h-153 ">
 
       {/* Toolbar */}
       <DashboardToolbar
-        onCreate={() => console.log("Create account")}
+
         filters={[
           {
             name: "Group",
@@ -94,26 +90,13 @@ function RiskManagement() {
             />
           </div> */}
           <div className="fixed  overflow-auto">
-
-            <div className="h-134  w-7xl overflow-y-auto border ">
+            <div className={`${active === "accounts" ? "h-80.75 border-b" : "h-134"} w-7xl overflow-y-auto mt-px`}>
               {active === "accounts" && <Account />}
               {active === "symbols" && <Symbols />}
               {active === "coverage positions" && <CoveragePosition />}
               {active === "positions" && <Position />}
             </div>
-
-             <div className="fixed bottom-8.5 w-7xl  right-0  z-50 border">
-              <Pagination
-              currentPage={currentPage}
-              // totalPages={Math.ceil(data.length / 10)} // example: 10 rows per page
-              onPageChange={handlePageChange}
-            />
-            </div>
-
           </div>
-
-
-
         </main>
 
       </div>

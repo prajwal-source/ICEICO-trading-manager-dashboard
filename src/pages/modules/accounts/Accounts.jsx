@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import DashboardToolbar from '../../../components/dashboard-toolbar/DashboardToolbar'
 import DataTable from '../../../components/uiComponents/DataTable'
 import Pagination from '../../../components/uiComponents/Pagination';
+import EditAccount from '../../../components/popups/editAccount/EditAccount';
+import { SquareChevronDown, SquareChevronUp } from 'lucide-react';
 
 const columns = [
   { header: "Group", field: "group" },
@@ -112,6 +114,7 @@ const columns = [
   },
 
 ];
+
 // dummy data
 const data = [
   {
@@ -422,10 +425,32 @@ const data = [
     free: 12800.00,
   },
 ];
+const columnsForTrade = [
+  { header: "Symbol", field: "symbol" },
+  { header: "Number", field: "number" },
+  { header: "Volume", field: "volume" },
+  { header: "Open Price", field: "openPrice" },
+  { header: "Current Price", field: "currentPrice" },
+  { header: "Profit", field: "profit" },
+];
 
+// dummy data
+const tradeData = [
+  {
+    symbol: "EURUSD",
+    number: 1001,
+    volume: 1.0,
+    openPrice: 1.0845,
+    currentPrice: 1.0872,
+    profit: 270,
+  },
+  
+];
 
 function Accounts() {
   const [currentPage, setCurrentPage] = useState(1);
+  const [editAccount, setEditAccount] = useState(false);
+  const [toggle, setToggel] = useState(true)
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
@@ -435,7 +460,6 @@ function Accounts() {
   return (
     <>
       <DashboardToolbar
-
         const filters={[
           {
             name: "Group",
@@ -515,14 +539,42 @@ function Accounts() {
         columns={columns}
         data={paginatedData}
         showPagination={true}
+        tableHeight={toggle ? "max-h-56" : "max-h-128"}
+        enableRowDblClick
+        onRowDoubleClick={(row) => {
+          setEditAccount(true)
+        }}
       />
-      <div className="fixed bottom-8.5 left-0 right-0 z-50 bg-white border-t">
+      <div className="fixed bottom-8.5 left-0 right-0 z-50 bg-white">
         <Pagination
           currentPage={currentPage}
           totalPages={Math.ceil(data.length / 10)} // example: 10 rows per page
           onPageChange={handlePageChange}
         />
+        <div className='border-b h-6 flex justify-between pr-3 bg-amber-100' onClick={() => setToggel(!toggle)}>
+          <div className='text-xm  pb-1 pl-2'>Trade</div>
+          {toggle ? <SquareChevronDown className='text-gray-700 ' size={25} /> : <SquareChevronUp className='text-gray-700' size={25} />}
+        </div >
+        {
+          toggle && (<div className='h-73'>
+            <DataTable
+              columns={columnsForTrade}
+              data={tradeData}
+              showPagination={true}
+              withTopPadding={false}
+              tableHeight="max-h-73"
+              enableRowDblClick
+              onRowDoubleClick={(row) => {
+                setEditAccount(true)
+              }} />
+          </div>)
+        }
+
       </div>
+      <EditAccount
+        isOpen={editAccount}
+        onClose={() => setEditAccount(false)}
+      />
     </>
   )
 }

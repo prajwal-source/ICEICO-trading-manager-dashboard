@@ -1,7 +1,7 @@
 import { PersonStanding, UserPlus, X } from "lucide-react";
 import CustomPopup from "../../../utils/CustomPopup";
 
-export default function NewAccount({ isOpen, onClose }) {
+export default function EditAccount({ isOpen, onClose }) {
     return (
         <CustomPopup
             isOpen={isOpen}
@@ -46,8 +46,11 @@ export default function NewAccount({ isOpen, onClose }) {
                                 <Input label="Zip code" />
                                 <Input label="Address" full />
                                 <Textarea label="Comment" full />
-                                <Input label="Password" />
-                                <Input label="Investor's" />
+                                <span>Password:<button className=" ml-2 border px-3 py-1 font-md hover:bg-gray-300 rounded bg-gray-200"
+                                    onClick={() => alert("message...")}
+                                >Modify</button></span>
+
+
                             </div>
                         </div>
 
@@ -78,7 +81,7 @@ export default function NewAccount({ isOpen, onClose }) {
                 {/* FOOTER (FIXED) */}
                 <div className="flex justify-end gap-3 mt-1 border-t p-1">
                     <button className="px-5 py-1.5 border rounded bg-white hover:bg-gray-100">
-                        Register
+                        Edit
                     </button>
                     <button
                         onClick={onClose}
@@ -92,8 +95,6 @@ export default function NewAccount({ isOpen, onClose }) {
         </CustomPopup>
     );
 }
-
-
 
 /* REUSABLE COMPONENTS */
 
@@ -110,7 +111,7 @@ const Input = ({ label, full, defaultValue }) => (
 const Textarea = ({ label, full }) => (
     <div className={full ? "md:col-span-2" : ""}>
         <label className="block text-xs mb-1">{label}:</label>
-    
+
         <textarea required className="w-full border rounded px-2 py-1 bg-white h-18" />
     </div>
 );

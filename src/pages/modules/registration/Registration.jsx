@@ -3,7 +3,7 @@ import DashboardToolbar from '../../../components/dashboard-toolbar/DashboardToo
 import DataTable from '../../../components/uiComponents/DataTable'
 import NewAccount from '../../../components/popups/new Account/NewAccount';
 import Pagination from '../../../components/uiComponents/Pagination';
-
+import EditAccount from '../../../components/popups/editAccount/EditAccount';
 
 const columns = [
     { header: "Group", field: "group" },
@@ -59,8 +59,8 @@ function Registration() {
     const rowsPerPage = 20;
     const startIndex = (currentPage - 1) * rowsPerPage;
     const paginatedData = data.slice(startIndex, startIndex + rowsPerPage);
-
     const [createAccount, setCreateAccount] = useState(false);
+    const [editAccount,setEditAccount]=useState(false);
     return (
         <>
             <DashboardToolbar
@@ -114,14 +114,20 @@ function Registration() {
 
                 onSearch={(text) => console.log("Search:", text)} />
             {/* DataTable */}
+           
             <DataTable
                 columns={columns}
-                data={paginatedData}
-                showPagination={true}
+               data={paginatedData}
+               showPagination={true}
+                enableRowDblClick
+                onRowDoubleClick={(row) => {
+                    setEditAccount(true)
+                }}
             />
 
+
             {/* create account popup  */}
-            <div className="fixed bottom-8.5 left-0 right-0 z-50 bg-white border-t">
+            <div className="fixed bottom-8.5 left-0 right-0 z-50 bg-white">
                 <Pagination
                     currentPage={currentPage}
                     totalPages={Math.ceil(data.length / 10)} // example: 10 rows per page
@@ -131,6 +137,10 @@ function Registration() {
             <NewAccount
                 isOpen={createAccount}
                 onClose={() => setCreateAccount(false)} />
+
+            <EditAccount
+            isOpen={editAccount}
+            onClose={()=>setEditAccount(false)}/>
         </>
     )
 }

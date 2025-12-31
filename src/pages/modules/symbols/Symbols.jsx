@@ -2,422 +2,343 @@ import React, { useState } from 'react'
 import DashboardToolbar from '../../../components/dashboard-toolbar/DashboardToolbar'
 import DataTable from '../../../components/uiComponents/DataTable'
 import Pagination from '../../../components/uiComponents/Pagination';
+import AddQuotePopup from './AddQuotePopup';
+
 
 const columns = [
-  { header: "Symbol", field: "symbol" },
+  { header: "Symbol", field: "group" },
   { header: "Name", field: "name" },
+  { header: "Bid", field: "number" },
+  { header: "Ask", field: "adress" },
+  { header: "Spread", field: "email" },
+  { header: "Time", field: "registration" },
+  { header: "Swap Long", field: "current" },
   {
-    header: <span className="block text-right">Bid</span>, field: "leverage",
-    render: (value) => {
-      const num = Number(
-        String(value).replace(/,/g, "")
-      );
-
-      return (
-        <div className="text-right">
-          {isNaN(num) ? "0.00" : num.toFixed(2)}
-        </div>
-      );
-    },
-  },
-  {
-    header: <span className="block text-right">Ask</span>, field: "deposit",
+    header: "Swap Short",
+    field: "status",
     render: (value) => (
-      <div className="text-right">
-        {Number(value).toFixed(2)}
-      </div>
+      <span className={` px-2 py-0.5 rounded text-xs font-semibold ${value === "Online" ? " text-green-600 " : "text-red-500"} `}
+      >
+        {value}
+      </span>
     ),
   },
-
-  {
-    header: <span className="block text-right">Time</span>, field: "withdraw",
-    render: (value) => (
-      <div className="text-right">
-        {Number(value).toFixed(2)}
-      </div>
-    ),
-  },
-  {
-    header: <span className="block text-right">Swap long</span>,
-    field: "bonus",
-    render: (value) => {
-      const num = Number(
-        String(value).replace(/,/g, "")
-      );
-
-      return (
-        <div className="text-right">
-          {isNaN(num) ? "0.00" : num.toFixed(2)}
-        </div>
-      );
-    },
-  },
-
-  {
-    header: <span className="block text-right">Swap Short</span>, field: "in-out",
-    render: (value) => (
-      <div className="text-right">
-        {Number(value).toFixed(2)}
-      </div>
-    ),
-  },
-  {
-    header: <span className="block text-right">Calculation type</span>, field: "deals",
-    render: (value) => (
-      <div className="text-right">
-        {Number(value).toFixed(2)}
-      </div>
-    ),
-  },
-  {
-    header: <span className="block text-right">Digit</span>, field: "margin_levels",
-    render: (value) => (
-      <div className="text-right">
-        {Number(value).toFixed(2)}
-      </div>
-    ),
-  },
-  {
-    header: <span className="block text-right">Gap Levels</span>, field: "spent",
-    render: (value) => (
-      <div className="text-right">
-        {Number(value).toFixed(2)}
-      </div>
-    ),
-  },
-  {
-    header: <span className="block text-right">Stop Levels</span>, field: "profit",
-    render: (value) => (
-      <div className="text-right">
-        {Number(value).toFixed(2)}
-      </div>
-    ),
-  },
-  {
-    header: <span className="block text-right">Delays</span>, field: "margin",
-    render: (value) => (
-      <div className="text-right">
-        {Number(value).toFixed(2)}
-      </div>
-    ),
-  },
-
-
+  { header: "Calculation Type", field: "authorisation" },
+  { header: "Digits", field: "logout" },
+  { header: "Gap Level", field: "logout" },
+  { header: "Stop Level", field: "logout" },
+  { header: "Delay", field: "logout" },
 ];
 // dummy data
 const data = [
   {
-    group: "general (live)",
-    number: 9997,
-    name: "test test test",
-    leverage: "1:100",
-    deposit: 9997.00,
-    withdraw: 0.00,
-    bonus: "0.00/0.00",
-    "in-out": 9997.00,
-    deals: -28.33,
-    margin_levels: "0.00",
-    spent: 0.00,
-    profit: 0.00,
-    margin: 0.00,
-    free: 9968.67,
-  },
-  {
-    group: "general (demo)",
-    number: 10001,
-    name: "TET TEST",
-    leverage: "1:1",
-    deposit: 10000.00,
-    withdraw: 0.00,
-    bonus: "0.00/0.00",
-    "in-out": 10000.00,
-    deals: 0.00,
-    margin_levels: "0.00",
-    spent: 0.00,
-    profit: 0.00,
-    margin: 0.00,
-    free: 10000.00,
-  },
-  {
-    group: "general (demo)",
-    number: 10003,
-    name: "test test",
-    leverage: "1:1",
-    deposit: 10000.00,
-    withdraw: 0.00,
-    bonus: "0.00/0.00",
-    "in-out": 10000.00,
-    deals: 4255.93,
-    margin_levels: "0.00",
-    spent: 0.00,
-    profit: 0.00,
-    margin: 0.00,
-    free: 14255.93,
-  },
-
-  {
-    group: "general (live)",
-    number: 10010,
+    group: "A",
+    number: 1001,
     name: "Rahul Sharma",
-    leverage: "1:200",
-    deposit: 15000.00,
-    withdraw: 2000.00,
-    bonus: "200.00/0.00",
-    "in-out": 13000.00,
-    deals: 1350.25,
-    margin_levels: "75.00",
-    spent: 100.00,
-    profit: 0.00,
-    margin: 3500.00,
-    free: 10850.25,
+    adress: "Delhi, India",
+    email: "rahul.sharma@gmail.com",
+    registration: "192.168.1.10",
+    current: "10.0.0.21",
+    status: "Online",
+    authorisation: "2024-01-12 10:15",
+    logout: "2024-01-12 18:30",
   },
   {
-    group: "general (demo)",
-    number: 10011,
+    group: "B",
+    number: 1002,
     name: "Anita Verma",
-    leverage: "1:50",
-    deposit: 5000.00,
-    withdraw: 0.00,
-    bonus: "0.00/0.00",
-    "in-out": 5000.00,
-    deals: -120.75,
-    margin_levels: "0.00",
-    spent: 0.00,
-    profit: 0.00,
-    margin: 0.00,
-    free: 4879.25,
+    adress: "Mumbai, India",
+    email: "anita.verma@gmail.com",
+    registration: "192.168.1.11",
+    current: "10.0.0.22",
+    status: "Offline",
+    authorisation: "2024-01-13 09:40",
+    logout: "2024-01-13 12:10",
   },
   {
-    group: "general (live)",
-    number: 10012,
+    group: "A",
+    number: 1003,
     name: "Suresh Kumar",
-    leverage: "1:100",
-    deposit: 20000.00,
-    withdraw: 5000.00,
-    bonus: "500.00/100.00",
-    "in-out": 15500.00,
-    deals: 2890.40,
-    margin_levels: "68.00",
-    spent: 200.00,
-    profit: 0.00,
-    margin: 6200.00,
-    free: 12190.40,
+    adress: "Chennai, India",
+    email: "suresh.kumar@gmail.com",
+    registration: "192.168.1.12",
+    current: "10.0.0.23",
+    status: "Online",
+    authorisation: "2024-01-14 11:05",
+    logout: "2024-01-14 19:00",
   },
   {
-    group: "general (demo)",
-    number: 10013,
+    group: "C",
+    number: 1004,
     name: "Pooja Singh",
-    leverage: "1:1",
-    deposit: 8000.00,
-    withdraw: 0.00,
-    bonus: "0.00/0.00",
-    "in-out": 8000.00,
-    deals: 560.00,
-    margin_levels: "0.00",
-    spent: 0.00,
-    profit: 0.00,
-    margin: 0.00,
-    free: 8560.00,
+    adress: "Lucknow, India",
+    email: "pooja.singh@gmail.com",
+    registration: "192.168.1.13",
+    current: "10.0.0.24",
+    status: "Offline",
+    authorisation: "2024-01-15 08:55",
+    logout: "2024-01-15 09:30",
   },
   {
-    group: "general (live)",
-    number: 10014,
+    group: "B",
+    number: 1005,
     name: "Amit Patel",
-    leverage: "1:300",
-    deposit: 25000.00,
-    withdraw: 3000.00,
-    bonus: "1000.00/200.00",
-    "in-out": 23000.00,
-    deals: 8450.75,
-    margin_levels: "82.00",
-    spent: 400.00,
-    profit: 0.00,
-    margin: 7100.00,
-    free: 23950.75,
+    adress: "Ahmedabad, India",
+    email: "amit.patel@gmail.com",
+    registration: "192.168.1.14",
+    current: "10.0.0.25",
+    status: "Online",
+    authorisation: "2024-01-16 10:20",
+    logout: "2024-01-16 18:10",
   },
   {
-    group: "general (demo)",
-    number: 10015,
+    group: "A",
+    number: 1006,
     name: "Neha Joshi",
-    leverage: "1:1",
-    deposit: 6000.00,
-    withdraw: 0.00,
-    bonus: "0.00/0.00",
-    "in-out": 6000.00,
-    deals: -450.00,
-    margin_levels: "0.00",
-    spent: 0.00,
-    profit: 0.00,
-    margin: 0.00,
-    free: 5550.00,
+    adress: "Pune, India",
+    email: "neha.joshi@gmail.com",
+    registration: "192.168.1.15",
+    current: "10.0.0.26",
+    status: "Offline",
+    authorisation: "2024-01-17 09:00",
+    logout: "2024-01-17 11:45",
   },
-
   {
-    group: "general (live)",
-    number: 10016,
+    group: "C",
+    number: 1007,
     name: "Vikas Mehta",
-    leverage: "1:100",
-    deposit: 12000.00,
-    withdraw: 1000.00,
-    bonus: "300.00/50.00",
-    "in-out": 11300.00,
-    deals: 980.60,
-    margin_levels: "70.00",
-    spent: 150.00,
-    profit: 0.00,
-    margin: 2800.00,
-    free: 10130.60,
+    adress: "Jaipur, India",
+    email: "vikas.mehta@gmail.com",
+    registration: "192.168.1.16",
+    current: "10.0.0.27",
+    status: "Online",
+    authorisation: "2024-01-18 12:30",
+    logout: "2024-01-18 20:15",
   },
   {
-    group: "general (demo)",
-    number: 10017,
+    group: "B",
+    number: 1008,
     name: "Kiran Rao",
-    leverage: "1:1",
-    deposit: 9000.00,
-    withdraw: 0.00,
-    bonus: "0.00/0.00",
-    "in-out": 9000.00,
-    deals: 1200.00,
-    margin_levels: "0.00",
-    spent: 0.00,
-    profit: 0.00,
-    margin: 0.00,
-    free: 10200.00,
+    adress: "Hyderabad, India",
+    email: "kiran.rao@gmail.com",
+    registration: "192.168.1.17",
+    current: "10.0.0.28",
+    status: "Online",
+    authorisation: "2024-01-19 10:10",
+    logout: "2024-01-19 17:40",
   },
   {
-    group: "general (live)",
-    number: 10018,
+    group: "A",
+    number: 1009,
     name: "Manoj Yadav",
-    leverage: "1:200",
-    deposit: 18000.00,
-    withdraw: 4000.00,
-    bonus: "400.00/100.00",
-    "in-out": 14400.00,
-    deals: -650.25,
-    margin_levels: "60.00",
-    spent: 200.00,
-    profit: 0.00,
-    margin: 5200.00,
-    free: 13549.75,
+    adress: "Patna, India",
+    email: "manoj.yadav@gmail.com",
+    registration: "192.168.1.18",
+    current: "10.0.0.29",
+    status: "Offline",
+    authorisation: "2024-01-20 08:45",
+    logout: "2024-01-20 09:20",
   },
   {
-    group: "general (demo)",
-    number: 10019,
+    group: "C",
+    number: 1010,
     name: "Sneha Kulkarni",
-    leverage: "1:1",
-    deposit: 7000.00,
-    withdraw: 0.00,
-    bonus: "0.00/0.00",
-    "in-out": 7000.00,
-    deals: 300.00,
-    margin_levels: "0.00",
-    spent: 0.00,
-    profit: 0.00,
-    margin: 0.00,
-    free: 7300.00,
-  },
-  {
-    group: "general (live)",
-    number: 10020,
-    name: "Rohit Malhotra",
-    leverage: "1:150",
-    deposit: 22000.00,
-    withdraw: 2000.00,
-    bonus: "600.00/150.00",
-    "in-out": 20600.00,
-    deals: 5200.90,
-    margin_levels: "78.00",
-    spent: 300.00,
-    profit: 0.00,
-    margin: 6400.00,
-    free: 19400.90,
+    adress: "Nagpur, India",
+    email: "sneha.k@gmail.com",
+    registration: "192.168.1.19",
+    current: "10.0.0.30",
+    status: "Online",
+    authorisation: "2024-01-21 11:00",
+    logout: "2024-01-21 18:50",
   },
 
   {
-    group: "general (demo)",
-    number: 10021,
+    group: "B",
+    number: 1011,
+    name: "Rohit Malhotra",
+    adress: "Gurgaon, India",
+    email: "rohit.m@gmail.com",
+    registration: "192.168.1.20",
+    current: "10.0.0.31",
+    status: "Online",
+    authorisation: "2024-01-22 10:30",
+    logout: "2024-01-22 17:00",
+  },
+  {
+    group: "A",
+    number: 1012,
     name: "Nidhi Jain",
-    leverage: "1:1",
-    deposit: 9500.00,
-    withdraw: 0.00,
-    bonus: "0.00/0.00",
-    "in-out": 9500.00,
-    deals: -200.00,
-    margin_levels: "0.00",
-    spent: 0.00,
-    profit: 0.00,
-    margin: 0.00,
-    free: 9300.00,
+    adress: "Indore, India",
+    email: "nidhi.j@gmail.com",
+    registration: "192.168.1.21",
+    current: "10.0.0.32",
+    status: "Offline",
+    authorisation: "2024-01-23 09:20",
+    logout: "2024-01-23 13:10",
   },
   {
-    group: "general (live)",
-    number: 10022,
+    group: "C",
+    number: 1013,
     name: "Arjun Kapoor",
-    leverage: "1:100",
-    deposit: 30000.00,
-    withdraw: 5000.00,
-    bonus: "1500.00/300.00",
-    "in-out": 26500.00,
-    deals: 10400.00,
-    margin_levels: "85.00",
-    spent: 500.00,
-    profit: 0.00,
-    margin: 8200.00,
-    free: 28700.00,
+    adress: "Noida, India",
+    email: "arjun.k@gmail.com",
+    registration: "192.168.1.22",
+    current: "10.0.0.33",
+    status: "Online",
+    authorisation: "2024-01-24 11:40",
+    logout: "2024-01-24 19:25",
   },
   {
-    group: "general (demo)",
-    number: 10023,
+    group: "B",
+    number: 1014,
     name: "Meera Nair",
-    leverage: "1:1",
-    deposit: 8500.00,
-    withdraw: 0.00,
-    bonus: "0.00/0.00",
-    "in-out": 8500.00,
-    deals: 950.00,
-    margin_levels: "0.00",
-    spent: 0.00,
-    profit: 0.00,
-    margin: 0.00,
-    free: 9450.00,
+    adress: "Kochi, India",
+    email: "meera.nair@gmail.com",
+    registration: "192.168.1.23",
+    current: "10.0.0.34",
+    status: "Online",
+    authorisation: "2024-01-25 10:05",
+    logout: "2024-01-25 18:35",
   },
   {
-    group: "general (live)",
-    number: 10024,
+    group: "A",
+    number: 1015,
     name: "Deepak Chauhan",
-    leverage: "1:200",
-    deposit: 16000.00,
-    withdraw: 3000.00,
-    bonus: "400.00/200.00",
-    "in-out": 13400.00,
-    deals: -980.00,
-    margin_levels: "55.00",
-    spent: 250.00,
-    profit: 0.00,
-    margin: 4900.00,
-    free: 12420.00,
+    adress: "Bhopal, India",
+    email: "deepak.c@gmail.com",
+    registration: "192.168.1.24",
+    current: "10.0.0.35",
+    status: "Offline",
+    authorisation: "2024-01-26 08:15",
+    logout: "2024-01-26 09:00",
+  },
+
+  {
+    group: "C",
+    number: 1016,
+    name: "Isha Roy",
+    adress: "Kolkata, India",
+    email: "isha.roy@gmail.com",
+    registration: "192.168.1.25",
+    current: "10.0.0.36",
+    status: "Online",
+    authorisation: "2024-01-27 12:10",
+    logout: "2024-01-27 20:00",
   },
   {
-    group: "general (demo)",
-    number: 10025,
-    name: "Isha Roy",
-    leverage: "1:1",
-    deposit: 11000.00,
-    withdraw: 0.00,
-    bonus: "0.00/0.00",
-    "in-out": 11000.00,
-    deals: 1800.00,
-    margin_levels: "0.00",
-    spent: 0.00,
-    profit: 0.00,
-    margin: 0.00,
-    free: 12800.00,
+    group: "B",
+    number: 1017,
+    name: "Sanjay Gupta",
+    adress: "Kanpur, India",
+    email: "sanjay.g@gmail.com",
+    registration: "192.168.1.26",
+    current: "10.0.0.37",
+    status: "Offline",
+    authorisation: "2024-01-28 09:35",
+    logout: "2024-01-28 12:45",
+  },
+  {
+    group: "A",
+    number: 1018,
+    name: "Ritu Saxena",
+    adress: "Agra, India",
+    email: "ritu.s@gmail.com",
+    registration: "192.168.1.27",
+    current: "10.0.0.38",
+    status: "Online",
+    authorisation: "2024-01-29 10:50",
+    logout: "2024-01-29 18:20",
+  },
+  {
+    group: "C",
+    number: 1019,
+    name: "Alok Mishra",
+    adress: "Prayagraj, India",
+    email: "alok.m@gmail.com",
+    registration: "192.168.1.28",
+    current: "10.0.0.39",
+    status: "Online",
+    authorisation: "2024-01-30 11:30",
+    logout: "2024-01-30 19:10",
+  },
+  {
+    group: "B",
+    number: 1020,
+    name: "Kavita Desai",
+    adress: "Surat, India",
+    email: "kavita.d@gmail.com",
+    registration: "192.168.1.29",
+    current: "10.0.0.40",
+    status: "Online",
+    authorisation: "2024-01-31 10:00",
+    logout: "2024-01-31 18:00",
+  },
+
+  {
+    group: "A",
+    number: 1021,
+    name: "Naveen Reddy",
+    adress: "Warangal, India",
+    email: "naveen.r@gmail.com",
+    registration: "192.168.1.30",
+    current: "10.0.0.41",
+    status: "Offline",
+    authorisation: "2024-02-01 09:10",
+    logout: "2024-02-01 11:20",
+  },
+  {
+    group: "C",
+    number: 1022,
+    name: "Pankaj Soni",
+    adress: "Udaipur, India",
+    email: "pankaj.s@gmail.com",
+    registration: "192.168.1.31",
+    current: "10.0.0.42",
+    status: "Online",
+    authorisation: "2024-02-02 10:45",
+    logout: "2024-02-02 19:00",
+  },
+  {
+    group: "B",
+    number: 1023,
+    name: "Shweta Tiwari",
+    adress: "Varanasi, India",
+    email: "shweta.t@gmail.com",
+    registration: "192.168.1.32",
+    current: "10.0.0.43",
+    status: "Online",
+    authorisation: "2024-02-03 11:15",
+    logout: "2024-02-03 18:45",
+  },
+  {
+    group: "A",
+    number: 1024,
+    name: "Ankur Bansal",
+    adress: "Meerut, India",
+    email: "ankur.b@gmail.com",
+    registration: "192.168.1.33",
+    current: "10.0.0.44",
+    status: "Offline",
+    authorisation: "2024-02-04 08:35",
+    logout: "2024-02-04 09:10",
+  },
+  {
+    group: "C",
+    number: 1025,
+    name: "Payal Arora",
+    adress: "Amritsar, India",
+    email: "payal.a@gmail.com",
+    registration: "192.168.1.34",
+    current: "10.0.0.45",
+    status: "Online",
+    authorisation: "2024-02-05 10:25",
+    logout: "2024-02-05 17:55",
   },
 ];
 
-
 function Symbols() {
   const [currentPage, setCurrentPage] = useState(1);
+  const [addQuote, setAddQuote] = useState(false);
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
@@ -426,87 +347,20 @@ function Symbols() {
   const paginatedData = data.slice(startIndex, startIndex + rowsPerPage);
   return (
     <>
+
       <DashboardToolbar
-
-        const filters={[
-          {
-            name: "Group",
-            value: "all",
-            onChange: (v) => console.log(v),
-            options: [
-              { label: "All", value: "all" },
-              { label: "General (Live)", value: "live" },
-              { label: "General (Demo)", value: "demo" },
-
-            ],
-          },
-          {
-            name: "Equity",
-            value: "all",
-            onChange: (v) => console.log(v),
-            options: [
-              { label: "All", value: "all" },
-              { label: "More 300", value: "yes" },
-              { label: "More 1000", value: "no" },
-              { label: "Less 300", value: "yes" },
-              { label: "Less 1000", value: "no" },
-
-            ],
-          },
-          {
-            name: "MoneyBack",
-            value: "all",
-            onChange: (v) => console.log(v),
-            options: [
-              { label: "All", value: "all" },
-              { label: "Yes", value: "yes" },
-              { label: "No", value: "no" },
-
-            ],
-          },
-          {
-            name: "Profitable",
-            value: "all",
-            onChange: (v) => console.log(v),
-            options: [
-              { label: "All", value: "all" },
-              { label: "Yes", value: "yes" },
-              { label: "No", value: "no" },
-
-            ],
-          },
-          {
-            name: "Registartion date",
-            value: "all",
-            onChange: (v) => console.log(v),
-            options: [
-              { label: "All", value: "all" },
-              { label: "December 2025", value: "yes" },
-              { label: "November 2025", value: "no" },
-              { label: "October 2025", value: "yes" },
-              { label: "Choose", value: "no" },
-
-            ],
-          },
-          {
-            name: "Demo/Live",
-            value: "all",
-            onChange: (v) => console.log(v),
-            options: [
-              { label: "All", value: "all" },
-              { label: "Demo", value: "yes" },
-              { label: "Live", value: "no" },
-            ],
-          },
-        ]}
-
         onSearch={(text) => console.log("Search:", text)}
       />
+
       {/* DataTable */}
       <DataTable
         columns={columns}
         data={paginatedData}
         showPagination={true}
+        enableRowDblClick
+        onRowDoubleClick={(row) => {
+          setAddQuote(true)
+        }}
       />
       <div className="fixed bottom-8.5 left-0 right-0 z-50 bg-white border-t">
         <Pagination
@@ -515,6 +369,12 @@ function Symbols() {
           onPageChange={handlePageChange}
         />
       </div>
+
+      <AddQuotePopup
+        isOpen={addQuote}
+        onClose={() => setAddQuote(false)}
+      />
+
     </>
   )
 }

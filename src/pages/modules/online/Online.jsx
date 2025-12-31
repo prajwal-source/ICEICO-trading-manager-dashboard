@@ -386,7 +386,7 @@ function Online() {
                 data={paginatedData}
                 showPagination={true}
             />
-             <div className="fixed bottom-8.5 left-0 right-0 z-50 bg-white border-t">
+             <div className="fixed bottom-8.5 left-0 right-0 z-50 bg-white ">
                 <Pagination
                     currentPage={currentPage}
                     totalPages={Math.ceil(data.length / 10)} // example: 10 rows per page

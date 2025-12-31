@@ -12,15 +12,12 @@ function Reports() {
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
-  // const rowsPerPage = 20;
-  // const startIndex = (currentPage - 1) * rowsPerPage;
-  // const paginatedData = data.slice(startIndex, startIndex + rowsPerPage);
+
   return (
     <div className="flex flex-col h-full overflow-hidden">
 
       {/* Top Toolbar */}
       <DashboardToolbar
-        onCreate={() => console.log("Create account")}
         filters={[
           {
             name: "Group",
@@ -33,24 +30,26 @@ function Reports() {
             ],
           },
           {
-            name: "Is Client",
+            name: "period",
             value: "all",
             onChange: (v) => console.log(v),
             options: [
               { label: "All", value: "all" },
-              { label: "Yes", value: "yes" },
-              { label: "No", value: "no" },
+              { label: "December 2025", value: "all" },
+              { label: "November 2025", value: "yes" },
+              { label: "October 2025", value: "no" },
+              { label: "Choose ", value: "no" },
             ],
           },
           {
-            name: "Registration Date",
+            name: "pips",
             value: "all",
             onChange: (v) => console.log(v),
             options: [
-              { label: "All", value: "all" },
-              { label: "December 2025", value: "dec" },
-              { label: "November 2025", value: "nov" },
-              { label: "October 2025", value: "oct" },
+              { label: "0", value: "all" },
+              { label: "5", value: "dec" },
+              { label: "10", value: "nov" },
+              { label: "12", value: "oct" },
             ],
           },
           {
@@ -64,8 +63,8 @@ function Reports() {
             ],
           },
         ]}
-        onSearch={(text) => console.log("Search:", text)}
-      />
+        onSearch={(e)=> console.log(e) }
+              />
 
       {/* Content Area */}
       <div className="flex flex-1 overflow-hidden mt-9">
@@ -90,14 +89,14 @@ function Reports() {
         </aside>
 
         {/* Main Body */}
-        <main className="flex-1 overflow-hidden h-150">
+        <main className="flex-1 overflow-hidden h-149.5 mt-0.25">
           
             {active === "trade" && <TradeReportDatatable />}
             {active === "account" && <AccountReportDatatable />}
             {active === "group" && <GroupReportDatatable />}
 
           
-          <div className="fixed bottom-8.5 w-7xl  right-0 z-50 border">
+          <div className="fixed bottom-8.5 w-7xl  right-0 z-50 ">
             <Pagination
               currentPage={currentPage}
               // totalPages={Math.ceil(data.length / 10)} // example: 10 rows per page

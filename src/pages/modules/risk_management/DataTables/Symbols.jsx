@@ -1,5 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 import DataTable from '../../../../components/uiComponents/DataTable';
+import SymbolsPopup from './popups/SymbolsPopup';
+import Pagination from '../../../../components/uiComponents/Pagination';
 
 const columns = [
     { header: "Group", field: "group" },
@@ -47,6 +49,7 @@ const data = [
     { group: "C", number: 130, name: "Ayesha Khan", city: "Alwar", registration: "2024-04-15 11:45", email: "ayesha.k@gmail.com", adress: "Scheme 1, Alwar", comment: "Active user" }
 ];
 function Symbols() {
+    const [modifySymbol, setModifySymbol] = useState(false);
     return (
         <>
             {/* DataTable */}
@@ -54,7 +57,18 @@ function Symbols() {
                 columns={columns}
                 data={data}
                 withTopPadding={false}
-                
+                enableRowDblClick
+                onRowDoubleClick={(row) => {
+                    setModifySymbol(true)
+                }} />
+
+            <div className="fixed bottom-8.5 w-319.75 z-50 bg-white ">
+                <Pagination />
+
+            </div>
+            <SymbolsPopup
+                isOpen={modifySymbol}
+                onClose={() => setModifySymbol(false)}
             />
         </>
     )

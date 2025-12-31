@@ -8,6 +8,8 @@ import Holidays from './Datatables/Holidays';
 import Groups from './Datatables/Groups';
 import Journals from './Datatables/Journals';
 import ArchivedAccount from './Datatables/ArchivedAccount';
+import Managers from './Datatables/Managers';
+import MainSettings from './Datatables/MainSettings';
 
 
 function Administrator() {
@@ -84,15 +86,15 @@ function Administrator() {
         </aside>
 
         {/* Main Body (NO SCROLL) */}
-        <main className="flex-1 overflow-hidden">
+        <main className="flex-1 overflow-hidden mt-0.25">
           {active === "monitor" && <MonitorDatatable/>}
-          {active === "main setting" && <div>Main Setting</div> }
+          {active === "main setting" && <MainSettings/>}
           {active === "ip access" && <IpAccess/>}
           {active === "symbols" && <AdminSymbols/> }
           {active === "symbol group" && <SymbolsGroup/>}
           {active === "holidays" && <Holidays/> }
           {active === "groups" && <Groups/>}
-          {active === "managers" && <div>Managers</div> }
+          {active === "managers" && <Managers/> }
           {active === "journals" && <Journals/> }
           {active === "archived accounts" && <ArchivedAccount/> }
         </main>

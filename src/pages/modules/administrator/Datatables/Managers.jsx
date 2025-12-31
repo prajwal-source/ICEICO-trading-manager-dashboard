@@ -12,13 +12,13 @@ const columns = [
 // dummy data
 const data = [
   {
-    number:"USD"
+    number:"100"
   },
  
 ];
 
 
-function ArchivedAccount() {
+function Managers() {
  
   return (
     <>
@@ -35,4 +35,4 @@ function ArchivedAccount() {
   )
 }
 
-export default ArchivedAccount;
+export default Managers;
