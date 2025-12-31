@@ -17,7 +17,7 @@ export default function NewAccount({ isOpen, onClose }) {
                 <div className="popup-header flex items-center justify-between bg-[#e7e5d5] px-2 py-1 border-b border-gray-400 ">
                     <div className="flex items-center text-xs gap-2 font-medium">
                         <UserPlus size={12} />
-                        <span>Edit Account</span>
+                        <span>New Account</span>
                     </div>
                     <X
                         size={18}

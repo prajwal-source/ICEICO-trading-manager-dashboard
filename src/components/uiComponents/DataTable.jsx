@@ -1,22 +1,36 @@
-import React, { useState } from "react";
-import Pagination from "./Pagination";
+import React, { useEffect, useState } from "react";
 
 const DataTable = ({
   columns = [],
   data = [],
+
   /* Layout */
   withTopPadding = true,
 
   /* Pagination */
   showPagination,
 
-  /* Row interaction */
+  /* Row interaction : double click */
   enableRowDblClick = false,
   onRowDoubleClick,
 
-  /* NEW */
-  tableHeight = "max-h-133.5", // default height
+  /* Row right click */
+  enableRowRightClick = false,
+  onRowRightClick,
+
+  /* Height */
+  tableHeight = "max-h-133.5",
 }) => {
+  const [selectedRowIndex, setSelectedRowIndex] = useState(null);
+
+  /* ✅ Clear selection when clicking outside table */
+  useEffect(() => {
+    const clearSelection = () => setSelectedRowIndex(null);
+    window.addEventListener("click", clearSelection);
+
+    return () => window.removeEventListener("click", clearSelection);
+  }, []);
+
   return (
     <div
       className={`w-full flex flex-col h-full ${withTopPadding ? "pt-[37px]" : ""
@@ -26,6 +40,7 @@ const DataTable = ({
       <div
         className={`flex-1 overflow-y-auto ${showPagination ? tableHeight : ""
           }`}
+        onClick={(e) => e.stopPropagation()} // prevent outside clear
       >
         <table className="w-full border-collapse hidden md:table">
           <thead>
@@ -33,7 +48,8 @@ const DataTable = ({
               {columns.map((col, index) => (
                 <th
                   key={index}
-                  className="sticky top-0 z-20 bg-gray-200 text-start text-[13px] px-1 py-1 border-x border-b font-semibold"
+                  className="sticky top-0 z-20 bg-gray-200 text-start
+                             text-[13px] px-1 py-1 border-x border-b font-semibold"
                 >
                   {col.header}
                 </th>
@@ -45,13 +61,42 @@ const DataTable = ({
             {data.map((row, rowIndex) => (
               <tr
                 key={rowIndex}
+
+                /* ✅ LEFT CLICK → highlight row */
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setSelectedRowIndex(rowIndex);
+                }}
+
+                /* DOUBLE CLICK */
                 onDoubleClick={() => {
                   if (enableRowDblClick && onRowDoubleClick) {
                     onRowDoubleClick(row, rowIndex);
                   }
                 }}
-                className={`${rowIndex % 2 === 0 ? "bg-amber-50" : "bg-white"
-                  } hover:bg-amber-100 transition-colors border`}
+
+                /* RIGHT CLICK */
+                onContextMenu={(e) => {
+                  if (!enableRowRightClick || !onRowRightClick) return;
+
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setSelectedRowIndex(rowIndex); // highlight row
+                  onRowRightClick(e, row, rowIndex);
+                }}
+
+                className={`
+                  ${rowIndex === selectedRowIndex
+                    ? "bg-amber-200 "
+                    : rowIndex % 2 === 0
+                      ? "bg-amber-50"
+                      : "bg-white"
+                  }
+                  
+                  transition-colors
+                  border
+                  cursor-pointer
+                `}
               >
                 {columns.map((col, colIndex) => (
                   <td
@@ -71,6 +116,5 @@ const DataTable = ({
     </div>
   );
 };
-
 
 export default DataTable;

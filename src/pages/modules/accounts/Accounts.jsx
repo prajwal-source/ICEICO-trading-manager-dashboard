@@ -1,430 +1,263 @@
-import React, { useState } from 'react'
-import DashboardToolbar from '../../../components/dashboard-toolbar/DashboardToolbar'
-import DataTable from '../../../components/uiComponents/DataTable'
-import Pagination from '../../../components/uiComponents/Pagination';
-import EditAccount from '../../../components/popups/editAccount/EditAccount';
-import { SquareChevronDown, SquareChevronUp } from 'lucide-react';
+import React, { useState } from "react";
+import DashboardToolbar from "../../../components/dashboard-toolbar/DashboardToolbar";
+import DataTable from "../../../components/uiComponents/DataTable";
+import Pagination from "../../../components/uiComponents/Pagination";
+import EditAccount from "../../../components/popups/editAccount/EditAccount";
+import { SquareChevronDown, SquareChevronUp } from "lucide-react";
+import ContextMenu from "../../../components/contextMenu/ContextMenu";
+import NewAccount from "../../../components/popups/new Account/NewAccount";
+
+/* ===================== COLUMNS ===================== */
 
 const columns = [
   { header: "Group", field: "group" },
   { header: "Number", field: "number" },
   { header: "Name", field: "name" },
   {
-    header: <span className="block text-right">Leverage</span>, field: "leverage",
-    render: (value) => {
-      const num = Number(
-        String(value).replace(/,/g, "")
-      );
-
-      return (
-        <div className="text-right">
-          {isNaN(num) ? "0.00" : num.toFixed(2)}
-        </div>
-      );
-    },
-  },
-  {
-    header: <span className="block text-right">Deposit</span>, field: "deposit",
+    header: <span className="block text-right">Leverage</span>,
+    field: "leverage",
     render: (value) => (
-      <div className="text-right">
-        {Number(value).toFixed(2)}
-      </div>
+      <div className="text-right">{value}</div>
     ),
   },
-
   {
-    header: <span className="block text-right">Withdraw</span>, field: "withdraw",
-    render: (value) => (
-      <div className="text-right">
-        {Number(value).toFixed(2)}
-      </div>
-    ),
+    header: <span className="block text-right">Deposit</span>,
+    field: "deposit",
+    render: (v) => <div className="text-right">{Number(v).toFixed(2)}</div>,
+  },
+  {
+    header: <span className="block text-right">Withdraw</span>,
+    field: "withdraw",
+    render: (v) => <div className="text-right">{Number(v).toFixed(2)}</div>,
   },
   {
     header: <span className="block text-right">Bonus In/Out</span>,
     field: "bonus",
-    render: (value) => {
-      const num = Number(
-        String(value).replace(/,/g, "")
-      );
-
-      return (
-        <div className="text-right">
-          {isNaN(num) ? "0.00" : num.toFixed(2)}
-        </div>
-      );
-    },
-  },
-
-  {
-    header: <span className="block text-right">In-Out</span>, field: "in-out",
-    render: (value) => (
-      <div className="text-right">
-        {Number(value).toFixed(2)}
-      </div>
-    ),
+    render: (v) => <div className="text-right">{v}</div>,
   },
   {
-    header: <span className="block text-right">Deals</span>, field: "deals",
-    render: (value) => (
-      <div className="text-right">
-        {Number(value).toFixed(2)}
-      </div>
-    ),
+    header: <span className="block text-right">In-Out</span>,
+    field: "in-out",
+    render: (v) => <div className="text-right">{Number(v).toFixed(2)}</div>,
   },
   {
-    header: <span className="block text-right">Margin Levels</span>, field: "margin_levels",
-    render: (value) => (
-      <div className="text-right">
-        {Number(value).toFixed(2)}
-      </div>
-    ),
+    header: <span className="block text-right">Deals</span>,
+    field: "deals",
+    render: (v) => <div className="text-right">{Number(v).toFixed(2)}</div>,
   },
   {
-    header: <span className="block text-right">Spent bonus</span>, field: "spent",
-    render: (value) => (
-      <div className="text-right">
-        {Number(value).toFixed(2)}
-      </div>
-    ),
+    header: <span className="block text-right">Margin Levels</span>,
+    field: "margin_levels",
+    render: (v) => <div className="text-right">{Number(v).toFixed(2)}</div>,
   },
   {
-    header: <span className="block text-right">Profit</span>, field: "profit",
-    render: (value) => (
-      <div className="text-right">
-        {Number(value).toFixed(2)}
-      </div>
-    ),
+    header: <span className="block text-right">Spent bonus</span>,
+    field: "spent",
+    render: (v) => <div className="text-right">{Number(v).toFixed(2)}</div>,
   },
   {
-    header: <span className="block text-right">Margin</span>, field: "margin",
-    render: (value) => (
-      <div className="text-right">
-        {Number(value).toFixed(2)}
-      </div>
-    ),
+    header: <span className="block text-right">Profit</span>,
+    field: "profit",
+    render: (v) => <div className="text-right">{Number(v).toFixed(2)}</div>,
   },
   {
-    header: <span className="block text-right">Free</span>, field: "free",
-    render: (value) => (
-      <div className="text-right">
-        {Number(value).toFixed(2)}
-      </div>
-    ),
+    header: <span className="block text-right">Margin</span>,
+    field: "margin",
+    render: (v) => <div className="text-right">{Number(v).toFixed(2)}</div>,
   },
-
+  {
+    header: <span className="block text-right">Free</span>,
+    field: "free",
+    render: (v) => <div className="text-right">{Number(v).toFixed(2)}</div>,
+  },
 ];
 
-// dummy data
+/* ===================== DUMMY DATA ===================== */
 const data = [
   {
     group: "general (live)",
-    number: 9997,
-    name: "test test test",
-    leverage: "1:100",
-    deposit: 9997.00,
-    withdraw: 0.00,
-    bonus: "0.00/0.00",
-    "in-out": 9997.00,
-    deals: -28.33,
-    margin_levels: "0.00",
-    spent: 0.00,
-    profit: 0.00,
-    margin: 0.00,
-    free: 9968.67,
-  },
-  {
-    group: "general (demo)",
     number: 10001,
-    name: "TET TEST",
-    leverage: "1:1",
-    deposit: 10000.00,
-    withdraw: 0.00,
-    bonus: "0.00/0.00",
-    "in-out": 10000.00,
-    deals: 0.00,
-    margin_levels: "0.00",
-    spent: 0.00,
-    profit: 0.00,
-    margin: 0.00,
-    free: 10000.00,
-  },
-  {
-    group: "general (demo)",
-    number: 10003,
-    name: "test test",
-    leverage: "1:1",
-    deposit: 10000.00,
-    withdraw: 0.00,
-    bonus: "0.00/0.00",
-    "in-out": 10000.00,
-    deals: 4255.93,
-    margin_levels: "0.00",
-    spent: 0.00,
-    profit: 0.00,
-    margin: 0.00,
-    free: 14255.93,
-  },
-
-  {
-    group: "general (live)",
-    number: 10010,
     name: "Rahul Sharma",
-    leverage: "1:200",
-    deposit: 15000.00,
-    withdraw: 2000.00,
-    bonus: "200.00/0.00",
-    "in-out": 13000.00,
-    deals: 1350.25,
-    margin_levels: "75.00",
-    spent: 100.00,
-    profit: 0.00,
-    margin: 3500.00,
-    free: 10850.25,
+    leverage: "1:100",
+    deposit: 15000,
+    withdraw: 2000,
+    bonus: "500/0",
+    "in-out": 13000,
+    deals: 1250.5,
+    margin_levels: 75,
+    spent: 100,
+    profit: 0,
+    margin: 3500,
+    free: 9400,
   },
   {
     group: "general (demo)",
-    number: 10011,
+    number: 10002,
     name: "Anita Verma",
     leverage: "1:50",
-    deposit: 5000.00,
-    withdraw: 0.00,
-    bonus: "0.00/0.00",
-    "in-out": 5000.00,
-    deals: -120.75,
-    margin_levels: "0.00",
-    spent: 0.00,
-    profit: 0.00,
-    margin: 0.00,
-    free: 4879.25,
+    deposit: 8000,
+    withdraw: 0,
+    bonus: "0/0",
+    "in-out": 8000,
+    deals: -250.75,
+    margin_levels: 0,
+    spent: 0,
+    profit: 0,
+    margin: 0,
+    free: 7749.25,
   },
   {
     group: "general (live)",
-    number: 10012,
+    number: 10003,
     name: "Suresh Kumar",
-    leverage: "1:100",
-    deposit: 20000.00,
-    withdraw: 5000.00,
-    bonus: "500.00/100.00",
-    "in-out": 15500.00,
-    deals: 2890.40,
-    margin_levels: "68.00",
-    spent: 200.00,
-    profit: 0.00,
-    margin: 6200.00,
-    free: 12190.40,
+    leverage: "1:200",
+    deposit: 25000,
+    withdraw: 5000,
+    bonus: "1000/200",
+    "in-out": 20000,
+    deals: 3450.9,
+    margin_levels: 82,
+    spent: 300,
+    profit: 0,
+    margin: 6000,
+    free: 17150.9,
   },
   {
     group: "general (demo)",
-    number: 10013,
+    number: 10004,
     name: "Pooja Singh",
     leverage: "1:1",
-    deposit: 8000.00,
-    withdraw: 0.00,
-    bonus: "0.00/0.00",
-    "in-out": 8000.00,
-    deals: 560.00,
-    margin_levels: "0.00",
-    spent: 0.00,
-    profit: 0.00,
-    margin: 0.00,
-    free: 8560.00,
+    deposit: 10000,
+    withdraw: 0,
+    bonus: "0/0",
+    "in-out": 10000,
+    deals: 560,
+    margin_levels: 0,
+    spent: 0,
+    profit: 0,
+    margin: 0,
+    free: 10560,
   },
   {
     group: "general (live)",
-    number: 10014,
+    number: 10005,
     name: "Amit Patel",
     leverage: "1:300",
-    deposit: 25000.00,
-    withdraw: 3000.00,
-    bonus: "1000.00/200.00",
-    "in-out": 23000.00,
+    deposit: 30000,
+    withdraw: 4000,
+    bonus: "1200/300",
+    "in-out": 26000,
     deals: 8450.75,
-    margin_levels: "82.00",
-    spent: 400.00,
-    profit: 0.00,
-    margin: 7100.00,
-    free: 23950.75,
+    margin_levels: 90,
+    spent: 500,
+    profit: 0,
+    margin: 7000,
+    free: 27450.75,
   },
   {
     group: "general (demo)",
-    number: 10015,
+    number: 10006,
     name: "Neha Joshi",
     leverage: "1:1",
-    deposit: 6000.00,
-    withdraw: 0.00,
-    bonus: "0.00/0.00",
-    "in-out": 6000.00,
-    deals: -450.00,
-    margin_levels: "0.00",
-    spent: 0.00,
-    profit: 0.00,
-    margin: 0.00,
-    free: 5550.00,
+    deposit: 6000,
+    withdraw: 0,
+    bonus: "0/0",
+    "in-out": 6000,
+    deals: -450,
+    margin_levels: 0,
+    spent: 0,
+    profit: 0,
+    margin: 0,
+    free: 5550,
   },
-
   {
     group: "general (live)",
-    number: 10016,
+    number: 10007,
     name: "Vikas Mehta",
-    leverage: "1:100",
-    deposit: 12000.00,
-    withdraw: 1000.00,
-    bonus: "300.00/50.00",
-    "in-out": 11300.00,
-    deals: 980.60,
-    margin_levels: "70.00",
-    spent: 150.00,
-    profit: 0.00,
-    margin: 2800.00,
-    free: 10130.60,
+    leverage: "1:150",
+    deposit: 18000,
+    withdraw: 3000,
+    bonus: "600/150",
+    "in-out": 15000,
+    deals: 2150.4,
+    margin_levels: 70,
+    spent: 200,
+    profit: 0,
+    margin: 4800,
+    free: 14150.4,
   },
   {
     group: "general (demo)",
-    number: 10017,
+    number: 10008,
     name: "Kiran Rao",
     leverage: "1:1",
-    deposit: 9000.00,
-    withdraw: 0.00,
-    bonus: "0.00/0.00",
-    "in-out": 9000.00,
-    deals: 1200.00,
-    margin_levels: "0.00",
-    spent: 0.00,
-    profit: 0.00,
-    margin: 0.00,
-    free: 10200.00,
+    deposit: 9000,
+    withdraw: 0,
+    bonus: "0/0",
+    "in-out": 9000,
+    deals: 1200,
+    margin_levels: 0,
+    spent: 0,
+    profit: 0,
+    margin: 0,
+    free: 10200,
   },
   {
     group: "general (live)",
-    number: 10018,
+    number: 10009,
     name: "Manoj Yadav",
     leverage: "1:200",
-    deposit: 18000.00,
-    withdraw: 4000.00,
-    bonus: "400.00/100.00",
-    "in-out": 14400.00,
+    deposit: 22000,
+    withdraw: 6000,
+    bonus: "800/200",
+    "in-out": 16000,
     deals: -650.25,
-    margin_levels: "60.00",
-    spent: 200.00,
-    profit: 0.00,
-    margin: 5200.00,
-    free: 13549.75,
+    margin_levels: 60,
+    spent: 300,
+    profit: 0,
+    margin: 5200,
+    free: 15449.75,
   },
   {
     group: "general (demo)",
-    number: 10019,
+    number: 10010,
     name: "Sneha Kulkarni",
     leverage: "1:1",
-    deposit: 7000.00,
-    withdraw: 0.00,
-    bonus: "0.00/0.00",
-    "in-out": 7000.00,
-    deals: 300.00,
-    margin_levels: "0.00",
-    spent: 0.00,
-    profit: 0.00,
-    margin: 0.00,
-    free: 7300.00,
-  },
-  {
-    group: "general (live)",
-    number: 10020,
-    name: "Rohit Malhotra",
-    leverage: "1:150",
-    deposit: 22000.00,
-    withdraw: 2000.00,
-    bonus: "600.00/150.00",
-    "in-out": 20600.00,
-    deals: 5200.90,
-    margin_levels: "78.00",
-    spent: 300.00,
-    profit: 0.00,
-    margin: 6400.00,
-    free: 19400.90,
-  },
-
-  {
-    group: "general (demo)",
-    number: 10021,
-    name: "Nidhi Jain",
-    leverage: "1:1",
-    deposit: 9500.00,
-    withdraw: 0.00,
-    bonus: "0.00/0.00",
-    "in-out": 9500.00,
-    deals: -200.00,
-    margin_levels: "0.00",
-    spent: 0.00,
-    profit: 0.00,
-    margin: 0.00,
-    free: 9300.00,
-  },
-  {
-    group: "general (live)",
-    number: 10022,
-    name: "Arjun Kapoor",
-    leverage: "1:100",
-    deposit: 30000.00,
-    withdraw: 5000.00,
-    bonus: "1500.00/300.00",
-    "in-out": 26500.00,
-    deals: 10400.00,
-    margin_levels: "85.00",
-    spent: 500.00,
-    profit: 0.00,
-    margin: 8200.00,
-    free: 28700.00,
-  },
-  {
-    group: "general (demo)",
-    number: 10023,
-    name: "Meera Nair",
-    leverage: "1:1",
-    deposit: 8500.00,
-    withdraw: 0.00,
-    bonus: "0.00/0.00",
-    "in-out": 8500.00,
-    deals: 950.00,
-    margin_levels: "0.00",
-    spent: 0.00,
-    profit: 0.00,
-    margin: 0.00,
-    free: 9450.00,
-  },
-  {
-    group: "general (live)",
-    number: 10024,
-    name: "Deepak Chauhan",
-    leverage: "1:200",
-    deposit: 16000.00,
-    withdraw: 3000.00,
-    bonus: "400.00/200.00",
-    "in-out": 13400.00,
-    deals: -980.00,
-    margin_levels: "55.00",
-    spent: 250.00,
-    profit: 0.00,
-    margin: 4900.00,
-    free: 12420.00,
-  },
-  {
-    group: "general (demo)",
-    number: 10025,
-    name: "Isha Roy",
-    leverage: "1:1",
-    deposit: 11000.00,
-    withdraw: 0.00,
-    bonus: "0.00/0.00",
-    "in-out": 11000.00,
-    deals: 1800.00,
-    margin_levels: "0.00",
-    spent: 0.00,
-    profit: 0.00,
-    margin: 0.00,
-    free: 12800.00,
+    deposit: 7000,
+    withdraw: 0,
+    bonus: "0/0",
+    "in-out": 7000,
+    deals: 300,
+    margin_levels: 0,
+    spent: 0,
+    profit: 0,
+    margin: 0,
+    free: 7300,
   },
 ];
+
+const tradeData = [
+  {
+    symbol: "EURUSD",
+    number: 5001,
+    volume: 1.2,
+    openPrice: 1.0845,
+    currentPrice: 1.0872,
+    profit: 270,
+  },
+  {
+    symbol: "GBPUSD",
+    number: 5002,
+    volume: 0.8,
+    openPrice: 1.2741,
+    currentPrice: 1.2698,
+    profit: -344,
+  },
+];
+
+
+/* ===================== TRADE TABLE ===================== */
+
 const columnsForTrade = [
   { header: "Symbol", field: "symbol" },
   { header: "Number", field: "number" },
@@ -434,149 +267,123 @@ const columnsForTrade = [
   { header: "Profit", field: "profit" },
 ];
 
-// dummy data
-const tradeData = [
-  {
-    symbol: "EURUSD",
-    number: 1001,
-    volume: 1.0,
-    openPrice: 1.0845,
-    currentPrice: 1.0872,
-    profit: 270,
-  },
-  
-];
+
+
+/* ===================== COMPONENT ===================== */
 
 function Accounts() {
   const [currentPage, setCurrentPage] = useState(1);
   const [editAccount, setEditAccount] = useState(false);
-  const [toggle, setToggel] = useState(true)
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
+  const [createAccount, setCreateAccount] = useState(false);
+  const [toggle, setToggle] = useState(true);
+
+  /* ===================== CONTEXT MENU ===================== */
+  const [menu, setMenu] = useState({
+    visible: false,
+    x: 0,
+    y: 0,
+    row: null,
+  });
+
+  const handleRightClick = (e, row) => {
+    e.preventDefault();
+    setMenu({
+      visible: true,
+      x: e.clientX,
+      y: e.clientY,
+      row,
+    });
   };
+
+  /* ===================== PAGINATION ===================== */
   const rowsPerPage = 20;
   const startIndex = (currentPage - 1) * rowsPerPage;
   const paginatedData = data.slice(startIndex, startIndex + rowsPerPage);
+
   return (
     <>
       <DashboardToolbar
-        const filters={[
-          {
-            name: "Group",
-            value: "all",
-            onChange: (v) => console.log(v),
-            options: [
-              { label: "All", value: "all" },
-              { label: "General (Live)", value: "live" },
-              { label: "General (Demo)", value: "demo" },
-
-            ],
-          },
-          {
-            name: "Equity",
-            value: "all",
-            onChange: (v) => console.log(v),
-            options: [
-              { label: "All", value: "all" },
-              { label: "More 300", value: "yes" },
-              { label: "More 1000", value: "no" },
-              { label: "Less 300", value: "yes" },
-              { label: "Less 1000", value: "no" },
-
-            ],
-          },
-          {
-            name: "MoneyBack",
-            value: "all",
-            onChange: (v) => console.log(v),
-            options: [
-              { label: "All", value: "all" },
-              { label: "Yes", value: "yes" },
-              { label: "No", value: "no" },
-
-            ],
-          },
-          {
-            name: "Profitable",
-            value: "all",
-            onChange: (v) => console.log(v),
-            options: [
-              { label: "All", value: "all" },
-              { label: "Yes", value: "yes" },
-              { label: "No", value: "no" },
-
-            ],
-          },
-          {
-            name: "Registartion date",
-            value: "all",
-            onChange: (v) => console.log(v),
-            options: [
-              { label: "All", value: "all" },
-              { label: "December 2025", value: "yes" },
-              { label: "November 2025", value: "no" },
-              { label: "October 2025", value: "yes" },
-              { label: "Choose", value: "no" },
-
-            ],
-          },
-          {
-            name: "Demo/Live",
-            value: "all",
-            onChange: (v) => console.log(v),
-            options: [
-              { label: "All", value: "all" },
-              { label: "Demo", value: "yes" },
-              { label: "Live", value: "no" },
-            ],
-          },
-        ]}
-
+        onCreate={() => setCreateAccount(true)}
         onSearch={(text) => console.log("Search:", text)}
       />
-      {/* DataTable */}
+
+      {/* ===================== MAIN TABLE ===================== */}
       <DataTable
         columns={columns}
         data={paginatedData}
-        showPagination={true}
+        showPagination
         tableHeight={toggle ? "max-h-56" : "max-h-128"}
         enableRowDblClick
-        onRowDoubleClick={(row) => {
-          setEditAccount(true)
-        }}
+        onRowDoubleClick={() => setEditAccount(true)}
+        enableRowRightClick
+        onRowRightClick={handleRightClick}
       />
+
+      {/* ===================== PAGINATION + TRADE ===================== */}
       <div className="fixed bottom-8.5 left-0 right-0 z-50 bg-white">
         <Pagination
           currentPage={currentPage}
-          totalPages={Math.ceil(data.length / 10)} // example: 10 rows per page
-          onPageChange={handlePageChange}
+          totalPages={Math.ceil(data.length / rowsPerPage)}
+          onPageChange={setCurrentPage}
         />
-        <div className='border-b h-6 flex justify-between pr-3 bg-amber-100' onClick={() => setToggel(!toggle)}>
-          <div className='text-xm  pb-1 pl-2'>Trade</div>
-          {toggle ? <SquareChevronDown className='text-gray-700 ' size={25} /> : <SquareChevronUp className='text-gray-700' size={25} />}
-        </div >
-        {
-          toggle && (<div className='h-73'>
+
+        <div
+          className="border-b h-6 flex justify-between pr-3 bg-amber-100"
+          onClick={() => setToggle(!toggle)}
+        >
+          <div className="text-xm pb-1 pl-2">Trade</div>
+          {toggle ? (
+            <SquareChevronDown size={25} />
+          ) : (
+            <SquareChevronUp size={25} />
+          )}
+        </div>
+
+        {toggle && (
+          <div className="h-73">
             <DataTable
               columns={columnsForTrade}
               data={tradeData}
-              showPagination={true}
+              showPagination
               withTopPadding={false}
               tableHeight="max-h-73"
               enableRowDblClick
-              onRowDoubleClick={(row) => {
-                setEditAccount(true)
-              }} />
-          </div>)
-        }
-
+              onRowDoubleClick={() => setEditAccount(true)}
+              enableRowRightClick
+              onRowRightClick={handleRightClick}
+            />
+          </div>
+        )}
       </div>
+
+      {/* ===================== CONTEXT MENU ===================== */}
+      <ContextMenu
+        x={menu.x}
+        y={menu.y}
+        visible={menu.visible}
+        onClose={() => setMenu({ ...menu, visible: false })}
+        onCreateAccount={() => {
+          setMenu({ ...menu, visible: false });
+          setCreateAccount(true);
+        }}
+        onEdit={() => {
+          setMenu({ ...menu, visible: false });
+          setEditAccount(true);
+        }}
+      />
+
+      {/* ===================== MODALS ===================== */}
       <EditAccount
         isOpen={editAccount}
         onClose={() => setEditAccount(false)}
       />
+
+      <NewAccount
+        isOpen={createAccount}
+        onClose={() => setCreateAccount(false)}
+      />
     </>
-  )
+  );
 }
 
 export default Accounts;

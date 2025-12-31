@@ -4,7 +4,6 @@ import Account from './DataTables/Account';
 import Symbols from './DataTables/Symbols';
 import CoveragePosition from './DataTables/CoveragePosition';
 import Position from './DataTables/Position';
-import Pagination from '../../../components/uiComponents/Pagination';
 
 function RiskManagement() {
   const [active, setActive] = useState("accounts");
