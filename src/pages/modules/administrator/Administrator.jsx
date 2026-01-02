@@ -20,50 +20,7 @@ function Administrator() {
 
       {/* Toolbar */}
       <DashboardToolbar
-        onCreate={() => console.log("Create account")}
-          filters={[
-          {
-            name: "Group",
-            value: "all",
-            onChange: (v) => console.log(v),
-            options: [
-              { label: "All", value: "all" },
-              { label: "General (Live)", value: "live" },
-              { label: "General (Demo)", value: "demo" },
-            ],
-          },
-          {
-            name: "Is Client",
-            value: "all",
-            onChange: (v) => console.log(v),
-            options: [
-              { label: "All", value: "all" },
-              { label: "Yes", value: "yes" },
-              { label: "No", value: "no" },
-            ],
-          },
-          {
-            name: "Registration Date",
-            value: "all",
-            onChange: (v) => console.log(v),
-            options: [
-              { label: "All", value: "all" },
-              { label: "December 2025", value: "dec" },
-              { label: "November 2025", value: "nov" },
-              { label: "October 2025", value: "oct" },
-            ],
-          },
-          {
-            name: "Demo/Live",
-            value: "all",
-            onChange: (v) => console.log(v),
-            options: [
-              { label: "All", value: "all" },
-              { label: "Demo", value: "demo" },
-              { label: "Live", value: "live" },
-            ],
-          },
-        ]}
+        
         onSearch={(text) => console.log("Search:", text)}
       />
 

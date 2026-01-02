@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 import DataTable from '../../../../components/uiComponents/DataTable'
+import EditGroupPopup from '../popups/EditGroupPopup';
 
 const columns = [
     { header: "Id", field: "id" },
@@ -22,13 +23,23 @@ const data = [
    
 ];
 function Groups() {
+  const [editGroup,setEditGroup]=useState(false);
   return (
     <>
     <DataTable
      columns={columns}
      data={data}
      withTopPadding={false}
+     enableRowDblClick
+     onRowDoubleClick={(row)=>{
+      setEditGroup(true)
+     }}
     />
+
+    <EditGroupPopup
+    isOpen={editGroup}
+    onClose={()=>setEditGroup(false)}  
+  />
     
     </>
   )

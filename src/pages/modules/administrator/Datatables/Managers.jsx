@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import DataTable from '../../../../components/uiComponents/DataTable';
+import EditManagerPopup from '../popups/EditManagerPopup';
 
 const columns = [
   { header: "Number", field: "number" },
@@ -19,7 +20,7 @@ const data = [
 
 
 function Managers() {
- 
+  const [editManager,setEditManager]=useState(false);
   return (
     <>
       
@@ -29,8 +30,15 @@ function Managers() {
         data={data}
         withTopPadding={false}
         showPagination={true}
+        enableRowDblClick
+        onRowDoubleClick={(row)=>{
+          setEditManager(true)
+        }}
       />
-     
+     <EditManagerPopup
+     isOpen={editManager}
+     onClose={()=>setEditManager(false)}
+     />
     </>
   )
 }

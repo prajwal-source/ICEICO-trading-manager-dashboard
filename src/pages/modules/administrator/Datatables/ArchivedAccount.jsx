@@ -12,25 +12,29 @@ const columns = [
 // dummy data
 const data = [
   {
-    number:"USD"
+    number: "USD"
   },
- 
+
 ];
 
 
 function ArchivedAccount() {
- 
+
   return (
     <>
-      
+
       {/* DataTable */}
       <DataTable
         columns={columns}
         data={data}
+        showRestoreColumn
+        onRestoreClick={(row, index) => {
+          console.log("Restore clicked:", row, index);
+        }}
         withTopPadding={false}
         showPagination={true}
       />
-     
+
     </>
   )
 }

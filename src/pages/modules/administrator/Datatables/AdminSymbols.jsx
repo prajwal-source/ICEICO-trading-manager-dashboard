@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import DataTable from '../../../../components/uiComponents/DataTable';
+import ModifySymbolPopup from '../popups/ModifySymbolPopup';
 
 const columns = [
   { header: "Symbol", field: "symbol" },
@@ -415,18 +416,30 @@ const data = [
 
 
 function AdminSymbols() {
- 
+  const [modifySymbol, setModifySymbol] = useState(false);
+
   return (
     <>
-      
+
       {/* DataTable */}
       <DataTable
         columns={columns}
         data={data}
         withTopPadding={false}
         showPagination={true}
+        enableRowDblClick
+        onRowDoubleClick={(row) => {
+          setModifySymbol(true); // ✅ open popup
+        }}
       />
-     
+      <ModifySymbolPopup
+        isOpen={modifySymbol}
+        onClose={() => {
+          setModifySymbol(false);
+
+        }}
+      />
+
     </>
   )
 }
