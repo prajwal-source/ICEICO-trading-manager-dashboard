@@ -5,19 +5,7 @@ import Pagination from "../../../components/uiComponents/Pagination";
 import EditAccount from "../../../components/popups/editAccount/EditAccount";
 import ContextMenu from "../../../components/contextMenu/ContextMenu";
 import NewAccount from "../../../components/popups/new Account/NewAccount";
-
-/* ===================== TABLE CONFIG ===================== */
-
-const columns = [
-  { header: "Group", field: "group" },
-  { header: "Number", field: "number" },
-  { header: "Name", field: "name" },
-  { header: "City", field: "city" },
-  { header: "Registration date", field: "registration" },
-  { header: "Email", field: "email" },
-  { header: "Adress", field: "adress" },
-  { header: "Comment", field: "comment" },
-];
+import AccountDetails from "../../../components/popups/accountDetails/AccountDetailsPopup";
 
 /* ===================== DUMMY DATA ===================== */
 
@@ -39,6 +27,9 @@ function Registration() {
   const [createAccount, setCreateAccount] = useState(false);
   const [editAccount, setEditAccount] = useState(false);
 
+  const [accountDetails, setAccountDetails] = useState(false);
+  const [selectedRow, setSelectedRow] = useState(null);
+
   /* ===================== CONTEXT MENU ===================== */
   const [menu, setMenu] = useState({
     visible: false,
@@ -54,6 +45,32 @@ function Registration() {
       y: e.clientY,
     });
   };
+
+  const columns = [
+    { header: "Group", field: "group" },
+    { header: "Number", field: "number" },
+    {
+      header: "Name",
+      field: "name",
+      render: (value, row) => (
+        <span
+          className="text-blue-600 hover:text-blue-800 font-semibold cursor-pointer "
+          onClick={(e) => {
+            e.stopPropagation();
+            setSelectedRow(row);     // ✅ store clicked row
+            setAccountDetails(true); // ✅ open popup
+          }}
+        >
+          {value}
+        </span>
+      ),
+    },
+    { header: "City", field: "city" },
+    { header: "Registration date", field: "registration" },
+    { header: "Email", field: "email" },
+    { header: "Adress", field: "adress" },
+    { header: "Comment", field: "comment" },
+  ];
 
   return (
     <>
@@ -107,6 +124,14 @@ function Registration() {
       <NewAccount
         isOpen={createAccount}
         onClose={() => setCreateAccount(false)}
+      />
+      <AccountDetails
+        isOpen={accountDetails}
+        row={selectedRow}   // ✅ THIS IS REQUIRED
+        onClose={() => {
+          setAccountDetails(false);
+          setSelectedRow(null);
+        }}
       />
     </>
   );

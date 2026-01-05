@@ -47,15 +47,13 @@ const DataTable = ({
 
   return (
     <div
-      className={`w-full flex flex-col h-full ${
-        withTopPadding ? "pt-[37px]" : ""
-      }`}
+      className={`w-full flex flex-col h-full ${withTopPadding ? "pt-[37px]" : ""
+        }`}
     >
       {/* TABLE AREA */}
       <div
-        className={`flex-1 overflow-y-auto ${
-          showPagination ? tableHeight : ""
-        }`}
+        className={`flex-1 overflow-y-auto ${showPagination ? tableHeight : ""
+          }`}
         onClick={(e) => e.stopPropagation()}
       >
         <table className="w-full border-collapse hidden md:table">
@@ -108,10 +106,9 @@ const DataTable = ({
                   onRowRightClick(e, row, rowIndex);
                 }}
                 className={`
-                  ${
-                    rowIndex === selectedRowIndex
-                      ? "bg-amber-200"
-                      : rowIndex % 2 === 0
+                  ${rowIndex === selectedRowIndex
+                    ? "bg-amber-200"
+                    : rowIndex % 2 === 0
                       ? "bg-amber-50"
                       : "bg-white"
                   }

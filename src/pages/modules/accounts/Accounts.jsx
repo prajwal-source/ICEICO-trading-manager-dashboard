@@ -6,71 +6,11 @@ import EditAccount from "../../../components/popups/editAccount/EditAccount";
 import { SquareChevronDown, SquareChevronUp } from "lucide-react";
 import ContextMenu from "../../../components/contextMenu/ContextMenu";
 import NewAccount from "../../../components/popups/new Account/NewAccount";
+import AccountDetailsPopup from "../../../components/popups/accountDetails/AccountDetailsPopup";
 
 /* ===================== COLUMNS ===================== */
 
-const columns = [
-  { header: "Group", field: "group" },
-  { header: "Number", field: "number" },
-  { header: "Name", field: "name" },
-  {
-    header: <span className="block text-right">Leverage</span>,
-    field: "leverage",
-    render: (value) => (
-      <div className="text-right">{value}</div>
-    ),
-  },
-  {
-    header: <span className="block text-right">Deposit</span>,
-    field: "deposit",
-    render: (v) => <div className="text-right">{Number(v).toFixed(2)}</div>,
-  },
-  {
-    header: <span className="block text-right">Withdraw</span>,
-    field: "withdraw",
-    render: (v) => <div className="text-right">{Number(v).toFixed(2)}</div>,
-  },
-  {
-    header: <span className="block text-right">Bonus In/Out</span>,
-    field: "bonus",
-    render: (v) => <div className="text-right">{v}</div>,
-  },
-  {
-    header: <span className="block text-right">In-Out</span>,
-    field: "in-out",
-    render: (v) => <div className="text-right">{Number(v).toFixed(2)}</div>,
-  },
-  {
-    header: <span className="block text-right">Deals</span>,
-    field: "deals",
-    render: (v) => <div className="text-right">{Number(v).toFixed(2)}</div>,
-  },
-  {
-    header: <span className="block text-right">Margin Levels</span>,
-    field: "margin_levels",
-    render: (v) => <div className="text-right">{Number(v).toFixed(2)}</div>,
-  },
-  {
-    header: <span className="block text-right">Spent bonus</span>,
-    field: "spent",
-    render: (v) => <div className="text-right">{Number(v).toFixed(2)}</div>,
-  },
-  {
-    header: <span className="block text-right">Profit</span>,
-    field: "profit",
-    render: (v) => <div className="text-right">{Number(v).toFixed(2)}</div>,
-  },
-  {
-    header: <span className="block text-right">Margin</span>,
-    field: "margin",
-    render: (v) => <div className="text-right">{Number(v).toFixed(2)}</div>,
-  },
-  {
-    header: <span className="block text-right">Free</span>,
-    field: "free",
-    render: (v) => <div className="text-right">{Number(v).toFixed(2)}</div>,
-  },
-];
+
 
 /* ===================== DUMMY DATA ===================== */
 const data = [
@@ -276,6 +216,9 @@ function Accounts() {
   const [editAccount, setEditAccount] = useState(false);
   const [createAccount, setCreateAccount] = useState(false);
   const [toggle, setToggle] = useState(true);
+  const [accountDetails, setAccountDetails] = useState(false);
+  const [selectedRow, setSelectedRow] = useState(null);
+
 
   /* ===================== CONTEXT MENU ===================== */
   const [menu, setMenu] = useState({
@@ -294,6 +237,87 @@ function Accounts() {
       row,
     });
   };
+
+  // Columns in the datatable
+
+  const columns = [
+    { header: "Group", field: "group" },
+    { header: "Number", field: "number" },
+    {
+      header: "Name",
+      field: "name",
+      render: (value, row) => (
+        <span
+          className="text-blue-600 hover:text-blue-800 font-semibold cursor-pointer "
+          onClick={(e) => {
+            e.stopPropagation();
+            setSelectedRow(row);     // ✅ store clicked row
+            setAccountDetails(true); // ✅ open popup
+          }}
+        >
+          {value}
+        </span>
+      ),
+    },
+
+    {
+      header: <span className="block text-right">Leverage</span>,
+      field: "leverage",
+      render: (value) => (
+        <div className="text-right">{value}</div>
+      ),
+    },
+    {
+      header: <span className="block text-right">Deposit</span>,
+      field: "deposit",
+      render: (v) => <div className="text-right">{Number(v).toFixed(2)}</div>,
+    },
+    {
+      header: <span className="block text-right">Withdraw</span>,
+      field: "withdraw",
+      render: (v) => <div className="text-right">{Number(v).toFixed(2)}</div>,
+    },
+    {
+      header: <span className="block text-right">Bonus In/Out</span>,
+      field: "bonus",
+      render: (v) => <div className="text-right">{v}</div>,
+    },
+    {
+      header: <span className="block text-right">In-Out</span>,
+      field: "in-out",
+      render: (v) => <div className="text-right">{Number(v).toFixed(2)}</div>,
+    },
+    {
+      header: <span className="block text-right">Deals</span>,
+      field: "deals",
+      render: (v) => <div className="text-right">{Number(v).toFixed(2)}</div>,
+    },
+    {
+      header: <span className="block text-right">Margin Levels</span>,
+      field: "margin_levels",
+      render: (v) => <div className="text-right">{Number(v).toFixed(2)}</div>,
+    },
+    {
+      header: <span className="block text-right">Spent bonus</span>,
+      field: "spent",
+      render: (v) => <div className="text-right">{Number(v).toFixed(2)}</div>,
+    },
+    {
+      header: <span className="block text-right">Profit</span>,
+      field: "profit",
+      render: (v) => <div className="text-right">{Number(v).toFixed(2)}</div>,
+    },
+    {
+      header: <span className="block text-right">Margin</span>,
+      field: "margin",
+      render: (v) => <div className="text-right">{Number(v).toFixed(2)}</div>,
+    },
+    {
+      header: <span className="block text-right">Free</span>,
+      field: "free",
+      render: (v) => <div className="text-right">{Number(v).toFixed(2)}</div>,
+    },
+  ];
 
   /* ===================== PAGINATION ===================== */
   const rowsPerPage = 20;
@@ -382,6 +406,16 @@ function Accounts() {
         isOpen={createAccount}
         onClose={() => setCreateAccount(false)}
       />
+
+      <AccountDetailsPopup
+        isOpen={accountDetails}
+        row={selectedRow}   // ✅ THIS IS REQUIRED
+        onClose={() => {
+          setAccountDetails(false);
+          setSelectedRow(null);
+        }}
+      />
+
     </>
   );
 }
