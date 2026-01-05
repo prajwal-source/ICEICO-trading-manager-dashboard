@@ -20,6 +20,15 @@ const data = [
 
 function ArchivedAccount() {
 
+  const handleRestore=()=>{
+     if (confirm("Do you want to Restore ?")) {
+        console.log("Account restored");
+        
+    } else {
+      return;
+    }
+  }
+
   return (
     <>
 
@@ -29,7 +38,7 @@ function ArchivedAccount() {
         data={data}
         showRestoreColumn
         onRestoreClick={(row, index) => {
-          console.log("Restore clicked:", row, index);
+          handleRestore();
         }}
         withTopPadding={false}
         showPagination={true}
