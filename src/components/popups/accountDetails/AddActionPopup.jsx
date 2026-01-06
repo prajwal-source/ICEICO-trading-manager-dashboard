@@ -93,6 +93,12 @@ export default function AddActionPopup({ isOpen, onClose, onSave }) {
                     >
                         Save
                     </button>
+                    <button
+                        onClick={() => onSave?.(form)}
+                        className="px-4 py-2 rounded text-sm bg-blue-600 text-white hover:bg-blue-700"
+                    >
+                        Save and create
+                    </button>
 
                     <button
                         onClick={onClose}
