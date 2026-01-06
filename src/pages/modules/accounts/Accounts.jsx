@@ -7,9 +7,7 @@ import { SquareChevronDown, SquareChevronUp } from "lucide-react";
 import ContextMenu from "../../../components/contextMenu/ContextMenu";
 import NewAccount from "../../../components/popups/new Account/NewAccount";
 import AccountDetailsPopup from "../../../components/popups/accountDetails/AccountDetailsPopup";
-
-/* ===================== COLUMNS ===================== */
-
+import ReportAccount from "../../../components/popups/reportAccount/ReportAccount";
 
 
 /* ===================== DUMMY DATA ===================== */
@@ -175,7 +173,6 @@ const data = [
     free: 7300,
   },
 ];
-
 const tradeData = [
   {
     symbol: "EURUSD",
@@ -194,10 +191,7 @@ const tradeData = [
     profit: -344,
   },
 ];
-
-
 /* ===================== TRADE TABLE ===================== */
-
 const columnsForTrade = [
   { header: "Symbol", field: "symbol" },
   { header: "Number", field: "number" },
@@ -206,11 +200,7 @@ const columnsForTrade = [
   { header: "Current Price", field: "currentPrice" },
   { header: "Profit", field: "profit" },
 ];
-
-
-
 /* ===================== COMPONENT ===================== */
-
 function Accounts() {
   const [currentPage, setCurrentPage] = useState(1);
   const [editAccount, setEditAccount] = useState(false);
@@ -218,8 +208,7 @@ function Accounts() {
   const [toggle, setToggle] = useState(true);
   const [accountDetails, setAccountDetails] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
-
-
+  const [reportAccount,setReportAccount]=useState(false);
   /* ===================== CONTEXT MENU ===================== */
   const [menu, setMenu] = useState({
     visible: false,
@@ -237,9 +226,7 @@ function Accounts() {
       row,
     });
   };
-
-  // Columns in the datatable
-
+/* ===================== COLUMNS ===================== */
   const columns = [
     { header: "Group", field: "group" },
     { header: "Number", field: "number" },
@@ -394,6 +381,10 @@ function Accounts() {
           setMenu({ ...menu, visible: false });
           setEditAccount(true);
         }}
+        onReport={()=>{
+           setMenu({ ...menu, visible: false });
+           setReportAccount(true);
+        }}
       />
 
       {/* ===================== MODALS ===================== */}
@@ -405,6 +396,12 @@ function Accounts() {
       <NewAccount
         isOpen={createAccount}
         onClose={() => setCreateAccount(false)}
+      />
+
+      <ReportAccount
+      
+      isOpen={reportAccount}
+      onClose={()=>setReportAccount(false)}
       />
 
       <AccountDetailsPopup

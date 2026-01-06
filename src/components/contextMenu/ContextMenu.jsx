@@ -13,6 +13,7 @@ export default function ContextMenu({
   onClose,
   onCreateAccount,
   onEdit,
+  onReport
 }) {
   useEffect(() => {
     const closeOnEsc = (e) => {
@@ -52,7 +53,7 @@ export default function ContextMenu({
         <MenuItem
           label="Report"
           icon={<UserLock size={16} />}
-          onClick={onClose}
+          onClick={onReport}
         />
 
         <Divider />
