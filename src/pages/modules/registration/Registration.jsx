@@ -6,6 +6,7 @@ import EditAccount from "../../../components/popups/editAccount/EditAccount";
 import ContextMenu from "../../../components/contextMenu/ContextMenu";
 import NewAccount from "../../../components/popups/new Account/NewAccount";
 import AccountDetails from "../../../components/popups/accountDetails/AccountDetailsPopup";
+import ReportPopup from "../../../components/popups/reportAccount/ReportAccount";
 
 /* ===================== DUMMY DATA ===================== */
 
@@ -29,6 +30,7 @@ function Registration() {
 
   const [accountDetails, setAccountDetails] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
+  const [reportAccount,setReportAccount]=useState(false);
 
   /* ===================== CONTEXT MENU ===================== */
   const [menu, setMenu] = useState({
@@ -113,6 +115,10 @@ function Registration() {
           setMenu({ ...menu, visible: false });
           setEditAccount(true);
         }}
+         onReport={()=>{
+           setMenu({ ...menu, visible: false });
+           setReportAccount(true);
+        }}
       />
 
       {/* ===================== MODALS ===================== */}
@@ -125,6 +131,12 @@ function Registration() {
         isOpen={createAccount}
         onClose={() => setCreateAccount(false)}
       />
+      
+      <ReportPopup
+      isOpen={reportAccount}
+      onClose={()=>setReportAccount(false)}
+      />
+
       <AccountDetails
         isOpen={accountDetails}
         row={selectedRow}   // ✅ THIS IS REQUIRED

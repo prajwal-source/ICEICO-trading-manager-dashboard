@@ -3,11 +3,13 @@ import { Eye, Edit2, Trash2, ChevronLeft, ChevronRight, Wallet } from "lucide-re
 import CustomPopup from "../../../utils/CustomPopup";
 import NotesPopup from "./NotesPopup";
 import AddActionPopup from "./AddActionPopup";
+import AddDescrition from "./AddDescritpion";
 
 export default function AccountDetails({ row, isOpen, onClose }) {
     const [showPhone, setShowPhone] = useState(false);
     const [showNotes, setShowNotes] = useState(false);
     const [addAction,setAddAction]=useState(false);
+    const [addDescription,setAddDescription]=useState(false);
 
     if (!row) return null;
 
@@ -127,7 +129,7 @@ export default function AccountDetails({ row, isOpen, onClose }) {
 
                                 <div className="flex gap-1 shrink-0">
                                     <button className="p-1.5 rounded hover:bg-gray-100">
-                                        <Edit2 className="w-4 h-4 text-gray-600" />
+                                        <Edit2 className="w-4 h-4 text-gray-600" onClick={()=>setAddDescription(true)} />
                                     </button>
                                     <button className="p-1.5 rounded hover:bg-gray-100">
                                         <Trash2 className="w-4 h-4 text-gray-600" />
@@ -165,6 +167,11 @@ export default function AccountDetails({ row, isOpen, onClose }) {
             <AddActionPopup
             isOpen={addAction}
             onClose={()=>setAddAction(false)}
+            />
+
+            <AddDescrition
+            isOpen={addDescription}
+            onClose={()=>setAddDescription(false)}
             
             />
         </CustomPopup>

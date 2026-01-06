@@ -1,10 +1,5 @@
 import React, { useState } from "react";
-import {
-    X,
-    ChevronDown,
-    Calendar,
-    Pencil
-} from "lucide-react";
+import { X, ChevronDown, Calendar, Pencil } from "lucide-react";
 import CustomPopup from "../../../utils/CustomPopup";
 
 export default function AddActionPopup({ isOpen, onClose, onSave }) {
@@ -14,7 +9,7 @@ export default function AddActionPopup({ isOpen, onClose, onSave }) {
         type: "Phone call",
         status: "New",
         actionDate: "05.01.2026 11:58",
-        description: ""
+        description: "",
     });
 
     const handleChange = (key, value) => {
@@ -22,16 +17,13 @@ export default function AddActionPopup({ isOpen, onClose, onSave }) {
     };
 
     return (
-        <CustomPopup isOpen={isOpen} onClose={onClose} width="700px" >
+        <CustomPopup isOpen={isOpen} onClose={onClose} width="700px">
             <div className="bg-white border rounded-lg shadow-md overflow-hidden">
 
                 {/* Header */}
                 <div className="flex items-center justify-between px-4 py-3 border-b">
                     <h2 className="text-lg font-semibold">Add action</h2>
-                    <button
-                        onClick={onClose}
-                        className="p-1 rounded hover:bg-red-600 hover:text-white"
-                    >
+                    <button onClick={onClose} className="p-1 rounded hover:bg-red-600 hover:text-white">
                         <X size={18} />
                     </button>
                 </div>
@@ -39,47 +31,55 @@ export default function AddActionPopup({ isOpen, onClose, onSave }) {
                 {/* Body */}
                 <div className="p-4 space-y-4">
 
-                    {/* Client */}
                     <FormRow label="Client" required>
                         <InputWithIcon
                             value={form.client}
+                            onChange={(e) => handleChange("client", e.target.value)}
                             icon={<Pencil size={16} />}
                         />
                     </FormRow>
 
-                    {/* Responsible */}
                     <FormRow label="Responsible" required>
                         <InputWithIcon
                             value={form.responsible}
+                            onChange={(e) => handleChange("responsible", e.target.value)}
                             icon={<Pencil size={16} />}
                         />
                     </FormRow>
 
-                    {/* Type */}
                     <FormRow label="Type">
-                        <SelectBox value={form.type} />
-                    </FormRow>
-
-                    {/* Status */}
-                    <FormRow label="Status">
-                        <SelectBox value={form.status} />
-                    </FormRow>
-
-                    {/* Action date */}
-                    <FormRow label="Action date" required>
-                        <InputWithIcon
-                            value={form.actionDate}
-                            icon={<Calendar size={16} />}
+                        <SelectBox
+                            value={form.type}
+                            options={["Phone call", "Email", "Meeting"]}
+                            onChange={(e) => handleChange("type", e.target.value)}
                         />
                     </FormRow>
 
-                    {/* Description */}
+                    <FormRow label="Status">
+                        <SelectBox
+                            value={form.status}
+                            options={["New", "In Progress", "Completed"]}
+                            onChange={(e) => handleChange("status", e.target.value)}
+                        />
+                    </FormRow>
+
+                    <FormRow label="Action date" required>
+                        <div className="relative">
+                            <input
+                                type="date"
+                                value={form.actionDate}
+                                onChange={(e) => handleChange("actionDate", e.target.value)}
+                                className="w-full border border-gray-300 rounded-md px-2 py-1.5 text-md focus:outline-none"
+                            />
+                            
+                        </div>
+                    </FormRow>
+
+
                     <FormRow label="Description" required alignTop>
                         <textarea
                             value={form.description}
-                            onChange={(e) =>
-                                handleChange("description", e.target.value)
-                            }
+                            onChange={(e) => handleChange("description", e.target.value)}
                             className="w-full h-28 resize-none border border-gray-300 rounded-md p-2 text-sm focus:outline-none"
                         />
                     </FormRow>
@@ -88,17 +88,10 @@ export default function AddActionPopup({ isOpen, onClose, onSave }) {
                 {/* Footer */}
                 <div className="flex justify-end gap-3 px-4 py-3 border-t bg-gray-50">
                     <button
-                        disabled
-                        className="px-4 py-2 rounded text-sm bg-gray-200 text-gray-400 cursor-not-allowed"
+                        onClick={() => onSave?.(form)}
+                        className="px-4 py-2 rounded text-sm bg-blue-600 text-white hover:bg-blue-700"
                     >
                         Save
-                    </button>
-
-                    <button
-                        disabled
-                        className="px-4 py-2 rounded text-sm bg-gray-200 text-gray-400 cursor-not-allowed"
-                    >
-                        Save and create
                     </button>
 
                     <button
@@ -113,7 +106,6 @@ export default function AddActionPopup({ isOpen, onClose, onSave }) {
     );
 }
 
-/* ---------- Reusable UI ---------- */
 
 function FormRow({ label, required, children, alignTop }) {
     return (
@@ -125,17 +117,18 @@ function FormRow({ label, required, children, alignTop }) {
                 {label}
                 {required && <span className="text-red-500 ml-1">*</span>}
             </label>
+
             <div className="col-span-2">{children}</div>
         </div>
     );
 }
 
-function InputWithIcon({ value, icon }) {
+function InputWithIcon({ value, onChange, icon }) {
     return (
         <div className="flex items-center border border-gray-300 rounded-md px-2">
             <input
                 value={value}
-                readOnly
+                onChange={onChange}
                 className="flex-1 text-sm py-1.5 focus:outline-none bg-transparent"
             />
             <span className="text-gray-500">{icon}</span>
@@ -143,15 +136,20 @@ function InputWithIcon({ value, icon }) {
     );
 }
 
-function SelectBox({ value }) {
+function SelectBox({ value, options = [], onChange }) {
     return (
-        <div className="flex items-center border border-gray-300 rounded-md px-2">
-            <input
+        <div className="relative">
+            <select
                 value={value}
-                readOnly
-                className="flex-1 text-sm py-1.5 focus:outline-none bg-transparent"
-            />
-            <ChevronDown size={18} className="text-gray-500" />
+                onChange={onChange}
+                className="w-full border border-gray-300 rounded-md px-2 py-1.5 text-sm appearance-none focus:outline-none"
+            >
+                {options.map((opt) => (
+                    <option key={opt} value={opt}>{opt}</option>
+                ))}
+            </select>
+            <ChevronDown size={18} className="absolute right-2 top-2.5 text-gray-500 pointer-events-none" />
         </div>
     );
 }
+
